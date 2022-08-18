@@ -1,0 +1,69 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+    <!--{if !empty($levels)}-->
+    <div class="form-group">
+        <label class="col-sm-2 control-label">邀请人等级</label>
+        <div class='col-sm-8'>
+            <select required class="layui-select full-width" name="inviter_level" lay-search>
+                {foreach $levels as $level}
+                <!--{eq name='$level.id' value='$vo.inviter_level|default=0'}-->
+                <option selected="selected" value="{$level.id}">{$level.level_title}</option>
+                <!--{else}-->
+                <option value="{$level.id}">{$level.level_title}</option>
+                <!--{/eq}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">被邀请人等级</label>
+        <div class='col-sm-8'>
+            <select required class="layui-select full-width" name="invitee_level" lay-search>
+                {foreach $levels as $level}
+                <!--{eq name='$level.id' value='$vo.invitee_level|default=0'}-->
+                <option selected="selected" value="{$level.id}">{$level.level_title}</option>
+                <!--{else}-->
+                <option value="{$level.id}">{$level.level_title}</option>
+                <!--{/eq}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <div class="form-group" data-open-purchase-type="1">
+        <label class="col-sm-2 control-label">返佣比例</label>
+        <div class='col-sm-8'>
+            <input type="number" required="required" name="percentage" value='{$vo.percentage|default=""}'  title="请输入返佣比例" placeholder="请输入返佣比例" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-7 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+        </div>
+    </div>
+
+    <script>window.form.render();</script>
+    <style>
+        .background-item {
+            padding: 15px;
+            background: #efefef;
+        }
+
+        .background-item thead tr {
+            background: #e0e0e0
+        }
+    </style>
+</form>
+<script>
+
+</script>
+{/block}

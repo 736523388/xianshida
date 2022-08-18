@@ -1,0 +1,85 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+
+<table class="layui-table" lay-even lay-skin="line">
+    <colgroup>
+        <col width="20%">
+        <col width="30%">
+        <col width="20%">
+        <col width="30%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th class="text-left" colspan="2">系统信息</th>
+        <th class="text-left" colspan="2">产品团队</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="max-width:200px" class="nowrap">ThinkAdmin 版本</td>
+        <td class="nowrap">{:sysconf('app_version')}</td>
+        <td style="max-width:200px" class="nowrap">产品名称</td>
+        <td class="nowrap">内容管理框架</td>
+    </tr>
+    <tr>
+        <td class="nowrap">ThinkPHP 版本</td>
+        <td class="nowrap">{$think_ver}</td>
+        <td class="nowrap">产品名称</td>
+        <td class="nowrap">内容管理框架</td>
+    </tr>
+    <tr>
+        <td class="nowrap">服务器操作系统</td>
+        <td class="nowrap">{:php_uname('s')}</td>
+        <td class="nowrap">技术博客</td>
+        <td class="nowrap">
+            <a target="_blank" href="http://www.jungshen.cn">http://www.jungshen.cn</a>
+        </td>
+    </tr>
+    <tr>
+        <td class="nowrap">WEB运行环境</td>
+        <td class="nowrap">{:php_sapi_name()}</td>
+        <td class="nowrap">技术支持</td>
+        <td class="nowrap">
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=979692441&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:979692441:51" alt="技术支持" title="技术支持"/></a>
+        </td>
+    </tr>
+    <tr>
+        <td class="nowrap">MySQL数据库版本</td>
+        <td class="nowrap">{$mysql_ver}</td>
+        <td class="nowrap">POST大小限制</td>
+        <td class="nowrap">{:ini_get('post_max_size')}</td>
+        <!--<td class="nowrap">BUG反馈</td>
+        <td class="nowrap">
+            <a target="_blank" href="https://github.com/zoujingli/ThinkAdmin/issues">
+                https://github.com/zoujingli/ThinkAdmin/issues
+            </a>
+        </td>-->
+    </tr>
+    <tr>
+        <td class="nowrap">运行PHP版本</td>
+        <td class="nowrap">{$Think.PHP_VERSION}</td>
+        <td class="nowrap">公司地址</td>
+        <td class="nowrap">重庆市九龙坡区石桥铺街道</td>
+        <!--<td class="nowrap">&lt;!&ndash;项目地址&ndash;&gt;</td>
+        <td class="nowrap">
+            &lt;!&ndash;<a target="_blank" href="https://github.com/zoujingli/ThinkAdmin">
+                https://github.com/zoujingli/ThinkAdmin
+            </a>&ndash;&gt;
+        </td>-->
+    </tr>
+    <tr>
+        <td class="nowrap">上传大小限制</td>
+        <td class="nowrap">{:ini_get('upload_max_filesize')}</td>
+        <td class="nowrap"><!--公司官网--></td>
+        <td class="nowrap"><!--<a target="_blank" href="http://www.cuci.cc">http://www.cuci.cc</a>--></td>
+    </tr>
+    <!--<tr>
+        <td class="nowrap">POST大小限制</td>
+        <td class="nowrap">{:ini_get('post_max_size')}</td>
+        <td class="nowrap">公司地址</td>
+        <td class="nowrap">重庆市九龙坡区石桥铺街道</td>
+    </tr>-->
+    </tbody>
+</table>
+{/block}

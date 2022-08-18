@@ -1,0 +1,130 @@
+{extend name='admin@public/content'}
+{block name="button"}
+
+<!--{if auth("$classuri/add")}-->
+<button data-open='{:url("$classuri/add")}' data-title="添加规则" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/forbid")}-->
+<button data-update data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/resume")}-->
+<button data-update data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量启用</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/del")}-->
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量删除</button>
+<!--{/if}-->
+
+{/block}
+
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+
+    <!--{if !empty($levels)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">邀请人等级</label>
+        <div class="layui-input-inline">
+            <select name="inviter_level">
+                <option value="">所有等级</option>
+                {foreach $levels as $level}
+                <!--{if $Think.get.inviter_level eq $level.id}-->
+                <option selected="selected" value="{$level.id}">{$level.level_title}</option>
+                <!--{else}-->
+                <option value="{$level.id}">{$level.level_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">被邀请人等级</label>
+        <div class="layui-input-inline">
+            <select name="invitee_level">
+                <option value="">所有等级</option>
+                {foreach $levels as $level}
+                <!--{if $Think.get.invitee_level eq $level.id}-->
+                <option selected="selected" value="{$level.id}">{$level.level_title}</option>
+                <!--{else}-->
+                <option value="{$level.id}">{$level.level_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+
+</form>
+
+<script>
+    window.laydate.render({range: true, elem: '#create_at'});
+    window.form.render();
+</script>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-left nowrap'>邀请人等级</th>
+            <th class='text-left nowrap'>被邀请人等级</th>
+            <th class='text-left nowrap'>返佣比例</th>
+            <th class='text-left nowrap'>状态</th>
+            <th class='text-left'></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-left nowrap'>{$vo.inviter_level_title}</td>
+            <td class='text-left nowrap'>{$vo.invitee_level_title}</td>
+            <td class='text-left nowrap'>{$vo.percentage * 100}%</td>
+            <td class='text-left nowrap text-top'>
+                {if $vo.status eq '0'}<span class="color-red margin-left-10">禁用</span>{elseif $vo.status eq '1'}<span class="color-green margin-left-10">正常</span>{/if}
+            </td>
+            <td class='text-left nowrap'>
+
+                <!--{if auth("$classuri/edit")}-->
+                <span class="text-explode">|</span>
+                <a data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <!--{/if}-->
+
+                <!--{if $vo.status eq 1 and auth("$classuri/forbid")}-->
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
+                <!--{elseif auth("$classuri/resume")}-->
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
+                <!--{/if}-->
+
+                <!--{if auth("$classuri/del")}-->
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
+{/block}

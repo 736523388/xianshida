@@ -1,0 +1,97 @@
+{extend name="admin@public/content"}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            基础运费
+        </label>
+        <div class='col-sm-8'>
+            <input name="basic_freight" required="required" title="请输入基础运费" placeholder="请输入基础运费" value="{:sysconf('basic_freight')}" class="layui-input">
+            <p class="help-block">单位：元</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            基础重量
+        </label>
+        <div class='col-sm-8'>
+            <input name="basic_weight" required="required" title="请输入基础重量" placeholder="请输入基础重量" value="{:sysconf('basic_weight')}" class="layui-input">
+            <p class="help-block">超出部分讲收取额外运费,单位：Kg</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            额外运费
+        </label>
+        <div class='col-sm-8'>
+            <input name="extra_freight" required="required" title="请输入额外运费" placeholder="请输入额外运费" value="{:sysconf('extra_freight')}" class="layui-input">
+            <p class="help-block">超出部分每Kg额外收取费用，单位：元</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            免邮金额
+        </label>
+        <div class='col-sm-8'>
+            <input name="exemption_postage_price" required="required" title="请输入免邮金额" placeholder="请输入免邮金额" value="{:sysconf('exemption_postage_price')}" class="layui-input">
+            <p class="help-block">订单达到此金额则免除邮费，单位：元</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            批发商免邮
+        </label>
+        <div class='col-sm-8'>
+            {php}
+            $insider_exempt_postage = sysconf('insider_exempt_postage')?sysconf('insider_exempt_postage'):'0';
+            {/php}
+            {foreach ['1'=>'是','0'=>'否'] as $k=>$v}
+            <label class="think-radio">
+                <!--{if $insider_exempt_postage eq $k}-->
+                <input checked type="radio" value="{$k}" name="insider_exempt_postage">
+                <!--{else}-->
+                <input type="radio" value="{$k}" name="insider_exempt_postage">
+                <!--{/if}-->
+                {$v}
+            </label>
+            {/foreach}
+
+            <p class="help-block">会员用户是否免除邮费</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            EBusinessID<br><span class="nowrap color-desc">快递鸟ID</span>
+        </label>
+        <div class='col-sm-8'>
+            <input name="ebusiness_id" required="required" title="请输入快递鸟ID" placeholder="请输入快递鸟ID" value="{:sysconf('ebusiness_id')}" class="layui-input">
+            <p class="help-block">请到快递鸟官网申请http://www.kdniao.com/ServiceApply.aspx</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            API key<br><span class="nowrap color-desc">快递鸟API key</span>
+        </label>
+        <div class='col-sm-8'>
+            <input name="ebusiness_key" required="required" title="请输入快递鸟key" placeholder="请输入快递鸟key" value="{:sysconf('ebusiness_key')}" class="layui-input">
+            <p class="help-block">请到快递鸟官网申请http://www.kdniao.com/ServiceApply.aspx</p>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-4 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+
+</form>
+{/block}

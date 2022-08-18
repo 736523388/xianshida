@@ -1,0 +1,55 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">评价内容</label>
+        <div class='col-sm-8'>
+            <textarea class="layui-textarea" name="describe" placeholder="请输入评价内容">{$vo.describe|default=''}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">图片</label>
+        <div class='col-sm-8'>
+            <table class="layui-table background-item margin-none" lay-size="sm" lay-skin="nob">
+                <thead>
+                <tr>
+                    <td>图片</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-top" style="width:100px">
+                        <input type="hidden" name="image" value="{$vo.image|default=''}">
+                        <script>$('[name=image]').uploadMultipleImage()</script>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-7 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" type="submit">保存</button>
+            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+        </div>
+    </div>
+
+    <script>window.form.render();</script>
+    <style>
+        .background-item {
+            padding: 15px;
+            background: #efefef;
+        }
+
+        .background-item thead tr {
+            background: #e0e0e0
+        }
+    </style>
+</form>
+{/block}

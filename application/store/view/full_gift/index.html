@@ -1,0 +1,81 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+
+<!--{if auth("$classuri/add")}-->
+<button data-open='{:url("$classuri/add")}' data-title="新增满赠活动" class='layui-btn layui-btn-sm layui-btn-primary'>新增满赠活动</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/del")}-->
+<button data-update="" data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除</button>
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+
+<ul class="layui-tab-title">
+    <li class="{if empty($Think.get.status_id)}layui-this{/if}" data-open='{:url("$classuri/index")}'>全部</li>
+    <li class="{if $Think.get.status_id eq 1}layui-this{/if}" data-open='{:url("$classuri/index")}?status_id=1'>未开始</li>
+    <li class="{if $Think.get.status_id eq 2}layui-this{/if}" data-open='{:url("$classuri/index")}?status_id=2'>进行中</li>
+    <li class="{if $Think.get.status_id eq 3}layui-this{/if}" data-open='{:url("$classuri/index")}?status_id=3'>已结束</li>
+</ul>
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-left nowrap'>活动名称</th>
+            <th class='text-left nowrap'>享受对象</th>
+            <th class='text-left nowrap'>有效时间</th>
+            <th class='text-left nowrap'>活动状态</th>
+            <th class='text-left nowrap'>活动条件</th>
+            <th class='text-left'></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-left nowrap'>{$vo.activity_name}</td>
+            <td class='text-left nowrap'>{$vo.identity==0?'不限':''}{$vo.identity==1?'会员':''}{$vo.identity==2?'批发商':''}</td>
+            <td class='text-left nowrap'>{$vo.activity_start_time}-<br>{$vo.activity_end_time}</td>
+            <td class='text-left nowrap'>{$vo.status_txt}</td>
+            <td class='text-left nowrap'>满{$vo.reach}赠{$vo.discount}</td>
+            <td class='text-left nowrap'>
+
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a data-title="编辑" data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                {/if}
+
+                {if auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                {/if}
+
+                <!--{if $vo.status eq 1 and auth("$classuri/forbid")}-->
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
+                <!--{elseif auth("$classuri/resume")}-->
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
+{/block}

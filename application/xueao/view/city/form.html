@@ -1,0 +1,49 @@
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级城市</label>
+        <div class="layui-input-block">
+            <input  readonly value="{$pid|get_city_name}" class="layui-input">
+            <input  value="{$pid}" class="layui-input" type="hidden" name="pid">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+            <input autofocus name="name" value='{$vo.name|default=""}' required title="请输入城市名称" placeholder="请输入城市名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">拼音</label>
+        <div class="layui-input-block">
+            <input autofocus name="pinyin" value='{$vo.pinyin|default=""}' required title="请输入拼音" placeholder="请输入拼音" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input autofocus name="sort" value='{$vo.sort|default=""}' required title="请输入排序" placeholder="请输入排序" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<style>
+    .background-item {
+        padding: 15px;
+        background: #efefef;
+    }
+
+    .background-item thead tr {
+        background: #e0e0e0
+    }
+</style>

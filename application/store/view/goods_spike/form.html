@@ -1,0 +1,80 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">活动名称</label>
+        <div class='col-sm-8'>
+            <input autofocus name="activity_name" value='{$vo.activity_name|default=""}' required="required" title="请输入活动名称" placeholder="请输入活动名称" class="layui-input">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">活动时间</label>
+        <div class='col-sm-8'>
+            <div class="layui-input-inline" style="width: 200px;">
+                <input type="text" id="activity_start_time" name="activity_start_time" value='{$vo.activity_start_time ?: date("Y-m-d H:i:s")}' autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-form-mid">-</div>
+            </div>
+            <div class="layui-input-inline" style="width: 200px;">
+                <input type="text" id="activity_end_time" name="activity_end_time" value='{$vo.activity_end_time ?: date("Y-m-d H:i:s")}'  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">秒杀商品</label>
+        <input type="hidden" name="goods_id" value='{$vo.goods_id|default=""}' id="goods_id">
+        <div class='col-sm-8'>
+            <button data-modal='{:url("$classuri/choose_goods")}' data-title="选择商品" class='layui-btn layui-btn-sm layui-btn-primary' type="button" id="goods_name">{$vo.goods_title|default='选择商品'}</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">秒杀价</label>
+        <div class='col-sm-8'>
+            <div class="layui-input-inline" style="width: 200px;">
+                <input type="number" name="activity_price" value='{$vo.activity_price|default=""}' required="required" title="请输入拼团价"  class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <div class="layui-form-mid">元</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">秒杀库存</label>
+        <div class='col-sm-8'>
+            <div class="layui-input-inline" style="width: 200px;">
+                <input type="number" name="activity_stock" value='{$vo.activity_stock|default=""}' required="required" title="请输入拼团库存" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">每人限购</label>
+        <div class='col-sm-8'>
+            <div class="layui-input-inline" style="width: 200px;">
+                <input type="number" name="activity_quantity" value='{$vo.activity_quantity|default=""}' required="required" title="请输入每人限购" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-7 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+        </div>
+    </div>
+    <script>
+        (function () {
+            window.form.render();
+            window.laydate.render({elem: '#activity_start_time',type:'datetime'});
+            window.laydate.render({elem: '#activity_end_time',type:'datetime'});
+        })();
+    </script>
+</form>
+
+{/block}

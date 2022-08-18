@@ -1,0 +1,114 @@
+{extend name="admin@public/content"}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            会员注册
+        </label>
+        <div class='col-sm-8'>
+            {php}
+            $open_register = sysconf('open_register')?sysconf('open_register'):'0';
+            {/php}
+            {foreach ['1'=>'开启','0'=>'关闭'] as $k=>$v}
+            <label class="think-radio">
+                <!--{if $open_register eq $k}-->
+                <input checked type="radio" value="{$k}" name="open_register">
+                <!--{else}-->
+                <input type="radio" value="{$k}" name="open_register">
+                <!--{/if}-->
+                {$v}
+            </label>
+            {/foreach}
+
+            <p class="help-block">是否开放用户注册</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            积分提现
+        </label>
+        <div class='col-sm-8'>
+            {php}
+            $open_integral_exchange = sysconf('open_integral_exchange')?sysconf('open_integral_exchange'):'0';
+            {/php}
+            {foreach ['1'=>'开启','0'=>'关闭'] as $k=>$v}
+            <label class="think-radio">
+                <!--{if $open_integral_exchange eq $k}-->
+                <input checked type="radio" value="{$k}" name="open_integral_exchange">
+                <!--{else}-->
+                <input type="radio" value="{$k}" name="open_integral_exchange">
+                <!--{/if}-->
+                {$v}
+            </label>
+            {/foreach}
+
+            <p class="help-block">是否开放积分提现</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            提现最低数量
+        </label>
+        <div class='col-sm-8'>
+            <input type="number" name="integral_start_num" required="required" title="请输入数量" placeholder="请输入数量" value="{:sysconf('integral_start_num')}" class="layui-input">
+            <p class="help-block">申请提现所需的最低积分数量</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            每日提现次数
+        </label>
+        <div class='col-sm-8'>
+            <input type="number" name="integral_take_day_num" required="required" title="请输入次数" placeholder="请输入次数" value="{:sysconf('integral_take_day_num')}" class="layui-input">
+            <p class="help-block">每日提现次数</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">
+            每月提现次数
+        </label>
+        <div class='col-sm-8'>
+            <input type="number" name="integral_take_month_num" required="required" title="请输入次数" placeholder="请输入次数" value="{:sysconf('integral_take_month_num')}" class="layui-input">
+            <p class="help-block">每月提现次数</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            积分兑换比例
+        </label>
+        <div class='col-sm-8'>
+            <input type="number" name="integral_exchange_ratio" required="required" title="请输入兑换比例" placeholder="请输入兑换比例" value="{:sysconf('integral_exchange_ratio')}" class="layui-input">
+            <p class="help-block">积分兑换人民币比例，1积分等于多少元</p>
+        </div>
+    </div>
+
+    <!--<div class="form-group">
+        <label class="col-sm-2 control-label">
+            普通用户名称
+        </label>
+        <div class='col-sm-8'>
+            <input  name="registered_name" required="required" title="请输入展示名称" placeholder="请输入展示名称" value="{:sysconf('registered_name')}" class="layui-input">
+            <p class="help-block">普通用户展示名称</p>
+        </div>
+    </div>-->
+    <!--<div class="form-group">
+        <label class="col-sm-2 control-label">普通用户Tips</label>
+        <div class='col-sm-8'>
+            <textarea class="layui-textarea" name="member_tips" placeholder="请输入普通用户Tips">{:sysconf('member_tips')}</textarea>
+        </div>
+    </div>-->
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-4 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+
+</form>
+{/block}

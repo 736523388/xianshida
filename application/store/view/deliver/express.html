@@ -1,0 +1,118 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" data-auto="true" method="post">
+
+    <!--<div class="layui-form-item">
+        <label class="layui-form-label">发货方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="way" lay-filter="way" value="1" title="快递" checked>
+            <input type="radio" name="way" lay-filter="way" value="2" title="到店自取">
+        </div>
+    </div>-->
+
+    <div class="js_kd_box">
+        {notempty name="express"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">物流公司</label>
+            <div class="layui-input-block">
+                <select lay-ignore required name="express" class="layui-select full-width block">
+                    {volist name="express" id="_express"}
+                    <option value="{$_express.express_title}@{$_express.express_code}">{$_express.express_title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        {/notempty}
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">物流单号</label>
+            <div class="layui-input-block">
+                <input class="layui-input" placeholder="请输入物流单号" title="请输入物流单号" name="send_no" />
+            </div>
+        </div>
+    </div>
+    <div class="js_zq_box" style="display: none;">
+        {notempty name="express"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">取货门店</label>
+            <div class="layui-input-block">
+                <select lay-ignore required name="store_id" class="layui-select full-width block">
+                    {volist name="stores" id="store"}
+                    <option value="{$store.id}">{$store.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        {/notempty}
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">寄件人</label>
+        <div class="layui-input-block">
+            <input class="layui-input" required placeholder="请输入寄件人姓名" title="请输入寄件人姓名" name="send_username" />
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">寄件人电话</label>
+        <div class="layui-input-block">
+            <input class="layui-input" required placeholder="请输入寄件人电话" title="请输入寄件人电话" name="send_phone" />
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label label-required">寄件省市区</label>
+        <div class="layui-input-block">
+            <div class="layui-col-xs4 padding-right-5">
+                <select lay-ignore name="send_province" class="layui-select block full-width" lay-ignore></select>
+            </div>
+            <div class="layui-col-xs4 padding-right-5">
+                <select lay-ignore name="send_city" class="layui-select block full-width" lay-ignore></select>
+            </div>
+            <div class="layui-col-xs4">
+                <select lay-ignore name="send_area" class="layui-select block full-width" lay-ignore></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">寄件人详细地址</label>
+        <div class="layui-input-block">
+            <textarea required placeholder="请输入详细地址" title="请输入详细地址" name="send_address" class="layui-textarea">{$send_address|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea required placeholder="请输入备注" title="请输入备注" name="express_desc" class="layui-textarea">{$desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($order_no)}<input type='hidden' value='{$order_no}' name='order_no'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+    <script>
+        $(function () {
+            require(['pcasunzips'], function () {
+                new PCAS('send_province', 'send_city', 'send_area', '{$send_province}', '{$send_city}', '{$send_area}');
+            });
+            window.form.render();
+            form.on('radio(way)', function(data){
+                if(data.value==1){
+                    //快递
+                    $('.js_kd_box').show();
+                    $('.js_zq_box').hide();
+                }else{
+                    //自取
+                    $('.js_kd_box').hide();
+                    $('.js_zq_box').show();
+                }
+            });
+        })
+    </script>
+</form>

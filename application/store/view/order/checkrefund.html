@@ -1,0 +1,79 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly name="order_no" value="{$orderBack['order_no']}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">申请时间</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly  value="{$orderBack['create_at']}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">申请原因</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly  value="{$orderBack['reason']}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" readonly>{$orderBack.remark|default=""}</textarea>
+        </div>
+    </div>
+    {notempty name="orderBack.images"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">凭证</label>
+            <div class="layui-input-block">
+                {volist name="orderBack['images']" id="img"}
+                    <img data-tips-image style="height: 50px;" src='{$img}'>
+                {/volist}
+            </div>
+        </div>
+    {/notempty}
+    {if $orderBack['is_back_goods'] eq 1}
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收件人</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly value="{$orderExpress.express_username}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货电话</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly value="{$orderExpress.express_phone}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收货地址</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" readonly>{$orderExpress.express_province}{$orderExpress.express_city}{$orderExpress.express_area}{$orderExpress.express_address}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物流公司</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly value="{$orderExpress.send_company_title}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物流单号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" readonly value="{$orderExpress.send_no}" />
+        </div>
+    </div>
+    {/if}
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <input type='hidden' value='{$orderBack.status}' name='status'>
+        <button class="layui-btn" type='submit'>{$orderBack['status']==0?'同意':'确认'}退款</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>容我想想</button>
+    </div>
+
+</form>

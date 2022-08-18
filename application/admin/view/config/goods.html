@@ -1,0 +1,111 @@
+{extend name="admin@public/content"}
+
+{block name="content"}
+<form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            秒杀背景图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('spike_bg_img')}"/>
+            <input type="hidden" name="spike_bg_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('spike_bg_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="spike_bg_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            团购背景图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('group_bg_img')}"/>
+            <input type="hidden" name="group_bg_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('group_bg_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="group_bg_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            团购周期
+        </label>
+        <div class='col-sm-8'>
+            <input name="group_hour" required="required" title="请输入团购周期" placeholder="请输入团购周期(小时)" value="{:sysconf('group_hour')}" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            拼团导航图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('group_nav_img')}"/>
+            <input type="hidden" name="group_nav_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('group_nav_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="group_nav_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            秒杀导航图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('spike_nav_img')}"/>
+            <input type="hidden" name="spike_nav_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('spike_nav_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="spike_nav_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            优惠券导航图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('coupon_nav_img')}"/>
+            <input type="hidden" name="coupon_nav_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('coupon_nav_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="coupon_nav_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            砍价导航图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('bargain_nav_img')}"/>
+            <input type="hidden" name="bargain_nav_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('bargain_nav_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="bargain_nav_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            砍价背景图
+        </label>
+        <div class='col-sm-8'>
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{:sysconf('bargain_bg_img')}"/>
+            <input type="hidden" name="bargain_bg_img" onchange="$(this).prev('img').attr('src', this.value)" value="{:sysconf('bargain_bg_img')}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="jpg,png,jpeg" data-field="bargain_bg_img">上传图片</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            砍价周期
+        </label>
+        <div class='col-sm-8'>
+            <input name="bargain_hour" required="required" title="请输入砍价周期" placeholder="请输入砍价周期(小时)" value="{:sysconf('bargain_hour')}" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <!--<div class="form-group">
+        <label class="col-sm-2 control-label">订单运费</label>
+        <div class='col-sm-8'>
+            <input name="order_post_fee" required="required" title="请输入每单运费" placeholder="请输入每单运费" value="{:sysconf('order_post_fee')}" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>-->
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-4 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+
+</form>
+
+{/block}

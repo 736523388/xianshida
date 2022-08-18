@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin:0px;
+            padding:0px;
+        }
+        body, button, input, select, textarea {
+            font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+        }
+        input#address{
+            width:300px;
+        }
+        #container {
+            min-width:500px;
+            min-height:335px;
+        }
+    </style>
+</head>
+<body onload="init()">
+<div>
+    <input id="address" type="textbox" value="{$Think.get.address}">
+    <button onclick="codeAddress()">search</button>
+</div>
+<div id="container"></div>
+</body>
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=RTMBZ-A623Q-C6253-GP3OC-UOJKH-DQBCS"></script>
+<script src="__STATIC__/plugs/layui/layui.all.js"></script>
+<script>
+    var geocoder,map,marker = null;
+    var init = function() {
+        var center = new qq.maps.LatLng(29.532028,106.484695);
+        map = new qq.maps.Map(document.getElementById('container'),{
+            center: center,
+            zoom: 15
+        });
+        //调用地址解析类
+        geocoder = new qq.maps.Geocoder({
+            complete : function(result){
+                if(!marker){
+                    map.setCenter(result.detail.location);
+                    marker = new qq.maps.Marker({
+                        map:map,
+                        position: result.detail.location
+                    });
+                    marker.setDraggable(true);
+                    qq.maps.event.addListener(marker, 'dragend', function(event) {
+                        codeLatLng(marker.position.lat,marker.position.lng);
+                    });
+                }
+
+                parent.$('input[name=address]').val(result.detail.address);
+                document.getElementById("address").value=result.detail.address;
+                parent.$('input[name=lat]').val(result.detail.location.lat);
+                parent.$('input[name=lng]').val(result.detail.location.lng);
+                console.log(result.detail.address)
+                console.log(result)
+            }
+        });
+    }
+
+
+    function codeAddress() {
+        var address = document.getElementById("address").value;
+        if(marker)marker.setVisible(false);
+        marker=null;
+        geocoder.getLocation(address);
+    }
+
+    function codeLatLng(lat,lng) {
+        var latLng = new qq.maps.LatLng(lat, lng);
+        //调用信息窗口
+        var info = new qq.maps.InfoWindow({map: map});
+        //调用获取位置方法
+        geocoder.getAddress(latLng);
+    }
+</script>
+</html>

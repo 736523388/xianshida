@@ -1,0 +1,41 @@
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型标题</label>
+        <div class="layui-input-block">
+            <input name="type_title" value='{$vo.type_title|default=""}' required title="请输入类型标题" placeholder="请输入类型标题" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">实名认证</label>
+        <div class="layui-input-block">
+            {foreach ['0'=>'否','1'=>'是'] as $k=>$v}
+            <label class="think-radio">
+                <!--{eq name="k" value="$vo.is_auth|default='0'"}-->
+                <input checked type="radio" name="is_auth" value="{$k}" title="{$v}" lay-ignore>
+                <!--{else}-->
+                <input type="radio" name="is_auth" value="{$k}" title="{$v}" lay-ignore>
+                <!--{/eq}-->
+                {$v}
+            </label>
+            {/foreach}
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型图片</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="image" required value="{$vo.image|default=''}">
+            <script>$('[name=image]').uploadOneImage()</script>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button'  data-close>取消编辑</button>
+    </div>
+</form>

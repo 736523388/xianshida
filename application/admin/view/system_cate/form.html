@@ -1,0 +1,96 @@
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级分类</label>
+        <div class="layui-input-block">
+            <select name='pid' class='layui-select full-width block'>
+                <!--{foreach cates as $cate}-->
+                <!--{eq name='cate.id' value='$vo.pid|default=0'}-->
+                <option selected value='{$cate.id}'>{$cate.spl|raw}{$cate.title|default=''}</option>
+                <!--{else}-->
+                <option value='{$cate.id}'>{$cate.spl|raw}{$cate.title}</option>
+                <!--{/eq}-->
+                <!--{/foreach}-->
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称</label>
+        <div class="layui-input-block">
+            <input autofocus name="title" value='{$vo.title|default=""}' required title="请输入分类名称" placeholder="请输入分类名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容发布</label>
+        <div class="layui-input-block">
+            <label class="think-radio">
+                <input {eq name="vo['allow_publish']|default=''" value="0"}checked{/eq} type="radio" name="allow_publish" value="0" title="不允许前台" lay-ignore>
+                不允许
+                <input {eq name="vo['allow_publish']|default=''" value="1"}checked{/eq} type="radio" name="allow_publish" value="1" title="允许前台" lay-ignore>
+                允许
+            </label>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类图标</label>
+        <div class="layui-input-block">
+            <table class="layui-table background-item margin-none" lay-size="sm" lay-skin="nob">
+                <thead>
+                <tr>
+                    <td>分类图标</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-top" style="width:100px">
+                        <input type="hidden" name="icon" value="{$vo.icon|default=''}">
+                        <script>$('[name=icon]').uploadOneImage()</script>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入分类描述" title="请输入分类描述" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类内容</label>
+        <div class="layui-input-block">
+            <textarea name="content">{$vo.content|default=''|htmlspecialchars_decode}</textarea>
+        </div>
+    </div>
+
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消</button>
+    </div>
+</form>
+<script>
+    require(['jquery', 'ckeditor', 'angular'], function () {
+        window.createEditor('[name="content"]', {height: 200});
+    });
+
+</script>
+<style>
+    .background-item {
+        padding: 15px;
+        background: #efefef;
+    }
+
+    .background-item thead tr {
+        background: #e0e0e0
+    }
+</style>

@@ -1,0 +1,72 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单状态</label>
+        <div class="layui-input-block">
+            <select name="status" class="layui-select">
+                <option value="">全部</option>
+                {foreach $Think.const.ORDER_STATUS_ARR  as $k=>$item}
+                <option value="{$k}">{$item}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">仓库</label>
+        <div class="layui-input-block">
+            <select name="depot_id" class="layui-select">
+                <option value="">全部</option>
+                {foreach $depots as $item}
+                <option value="{$item.id}">{$item.depot_title}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">下单时间</label>
+        <div class="layui-input-block">
+            <input name="create_at" data-time placeholder="请选择下单时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label label-required">收货省市区</label>
+        <div class="layui-input-block">
+            <div class='col-sm-2'>
+                <select name="province" required="required" data-value="" lay-filter="province">
+                    <option value="0">请选择</option>
+                </select>
+            </div>
+            <div class='col-sm-2'>
+                <select name="city" data-value="" lay-filter="city">
+                    <option value="0">请选择</option>
+                </select>
+            </div>
+            <div class='col-sm-2'>
+                <select name="district" data-value="" lay-filter="district">
+                    <option value="0">请选择</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>立即导出</button>
+        <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">返回列表</button>
+    </div>
+</form>
+<script>
+    $(function () {
+        window.form.render();
+        $('[data-time]').map(function () {
+            window.laydate.render({range: true, elem: this});
+        });
+    })
+</script>
+{block name='script'}
+<script src="__STATIC__/citylist.js"></script>
+{/block}

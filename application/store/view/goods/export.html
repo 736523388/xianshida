@@ -1,0 +1,133 @@
+<form autocomplete="off" class="layui-form layui-box" style='padding:25px 30px 20px 0' action="{:request()->url()}" method="post">
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <input name="goods_title" value="{$Think.get.goods_title}" placeholder="请输入商品名称" class="layui-input">
+        </div>
+    </div>
+    <!--{if !empty($cates)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品品牌</label>
+        <div class="layui-input-inline">
+            <select name="brand_id" lay-search>
+                <option value="">商品品牌</option>
+                {foreach $brands as $brand}
+                <!--{if $Think.get.brand_id eq $brand.id}-->
+                <option selected="selected" value="{$brand.id}">{$brand.brand_title}</option>
+                <!--{else}-->
+                <option value="{$brand.id}">{$brand.brand_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <!--{if !empty($depots)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">仓库名称</label>
+        <div class="layui-input-inline">
+            <select name="depot_id" lay-search>
+                <option value="">仓库名称</option>
+                {foreach $depots as $depot}
+                <!--{if $Think.get.depot_id eq $depot.id}-->
+                <option selected="selected" value="{$depot.id}">{$depot.depot_title}</option>
+                <!--{else}-->
+                <option value="{$depot.id}">{$depot.depot_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <!--{if !empty($types)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品类型</label>
+        <div class="layui-input-inline">
+            <select name="type_id">
+                <option value="">所有类型</option>
+                {foreach $types as $type}
+                <!--{if $Think.get.type_id eq $type.id}-->
+                <option selected="selected" value="{$type.id}">{$type.type_title}</option>
+                <!--{else}-->
+                <option value="{$type.id}">{$type.type_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <!--{if !empty($tags)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品标签</label>
+        <div class="layui-input-inline">
+            <select name="tags_id">
+                <option value="">商品标签</option>
+                {foreach $tags as $tag}
+                <!--{if $Think.get.tags_id eq $tag.id}-->
+                <option selected="selected" value="{$tag.id}">{$tag.tags_title}</option>
+                <!--{else}-->
+                <option value="{$tag.id}">{$tag.tags_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <!--{if !empty($cates)}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品分类</label>
+        <div class="layui-input-inline">
+            <select name="cate_id">
+                <option value="">所有分类</option>
+                {foreach $cates as $cate}
+                <!--{if $Think.get.cate_id eq $cate.id}-->
+                <option selected="selected" value="{$cate.id}">{$cate.spl|raw}{$cate.cate_title}</option>
+                <!--{else}-->
+                <option value="{$cate.id}">{$cate.spl|raw}{$cate.cate_title}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <!--{/if}-->
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">排序方式</label>
+        <div class="layui-input-inline">
+            <select name="sort_type">
+                <option value="">默认排序</option>
+                {foreach ['1'=>'按添加时间倒序','2'=>'按添加时间升序','3'=>'按剩余库存升序'] as $k=>$v}
+                <!--{if $Think.get.sort_type eq $k}-->
+                <option selected="selected" value="{$k}">{$v}</option>
+                <!--{else}-->
+                <option value="{$k}">{$v}</option>
+                <!--{/if}-->
+                {/foreach}
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-inline">
+            <input name="create_at" id="create_at" value="{$Think.get.create_at}" placeholder="请选择发布时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>立即导出</button>
+        <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">返回列表</button>
+    </div>
+</form>
+<script>
+    (function () {
+        window.form.render();
+        window.laydate.render({range: true, elem: '#create_at'});
+    })();
+</script>

@@ -1,0 +1,102 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<!-- 表单搜索 开始 -->
+<form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+    <div class="layui-form-item layui-inline">
+        <div class="layui-input-inline">
+            <input name="keyword" value="" placeholder="商品关键词" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary" type="button" id="search-button"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+
+</form>
+<!-- 表单搜索 结束 -->
+
+<table class="layui-table" id="layui_table_id" lay-filter="test">
+</table>
+<script type="textml" id="barDemo">
+<a class="layui-btn layui-btn-primary layui-btn-xs use-button" lay-event="use">使用</a>
+</script>
+<script type="text/html" id="imgTpl">
+    <img src="{{ d.goods_image }}">
+    {{ d.goods_title}}
+</script>
+<div id="laypage"></div>
+<script>
+    var limitcount = 10;
+    var curnum = 1;
+    //列表查询方法
+    function productsearch(keyword,start,limitsize) {
+        layui.use(['table','laypage','laydate'],function () {
+            var table = layui.table,
+                laypage = layui.laypage;
+            table.render({
+                elem: "#layui_table_id",
+                url: "{:request()->url()}&keyword=" + keyword + '&page=' + start + '&pagesize=' + limitsize,
+                method: 'POST',
+                cols: [[
+                    {field: 'goods_title', title: '商品名称', width: '480'}
+                    , {field: 'create_at', title: '添加时间', width: '220', sort: true}
+                    , {field: 'poperation', title: '选择', width: '100',fixed: 'right', toolbar: '#barDemo'}
+                ]],
+                page: false,
+                height: 430,
+                done: function (res,curr,count) {
+                    laypage.render({
+                        elem: 'laypage',
+                        count:count,
+                        curr:curnum,
+                        limit:limitcount,
+                        layout: ['prev', 'page', 'next', 'skip','count','limit'],
+                        jump: function(obj,first){
+                            if(!first){
+                                curnum = obj.curr;
+                                limitcount = obj.limit;
+                                id = 0;
+                                productsearch(keyword,obj.curr,obj.limit);
+                            }
+                        }
+                    })
+                }
+            })
+            //监听工具条
+            table.on('tool(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , tr = obj.tr; //获得当前行 tr 的DOM对象
+                console.log(obj)
+                $(".use-button").addClass('layui-btn-primary').removeClass('layui-btn-normal').html('使用');
+                tr.find('.use-button').addClass('layui-btn-normal').removeClass('layui-btn-primary').html('已选');
+                parent.$("#goods_name").html(data.goods_title)
+                parent.$("#goods_id").val(data.id)
+                // if(tr.find('.use-button').hasClass('layui-btn-normal')){
+                //     tr.find('.use-button').addClass('layui-btn-primary').removeClass('layui-btn-normal').html('使用');
+                //     parent.$("#goods_name").html('选择商品')
+                //     parent.$("#goods_id").val('')
+                // }else{
+                //     $(".use-button").addClass('layui-btn-primary').removeClass('layui-btn-normal').html('使用');
+                //     tr.find('.use-button').addClass('layui-btn-normal').removeClass('layui-btn-primary').html('取消');
+                //     parent.$("#goods_name").html(data.goods_title)
+                //     parent.$("#goods_id").val(data.id)
+                // }
+            })
+        })
+    }
+    var keyword = "";
+    productsearch(keyword, curnum, limitcount);
+    $("#search-button").click(function () {
+        keyword = $("input[name='keyword']").val();
+        curnum = 1;
+        limitcount = 10;
+        productsearch(keyword, curnum, limitcount);
+    })
+
+</script>
+<div class="col-sm-7 col-sm-offset-2">
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit" onclick="parent.layer.close(layer.index)">确定</button>
+    </div>
+</div>
+{/block}
