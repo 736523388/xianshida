@@ -170,7 +170,7 @@ class GoodsService
             $goods_spec = Db::name('StoreGoodsSpec')->where('id',$goodsdetail['spec_id'])->find();
             $spec_list = json_decode(isset($goods_spec['spec_param']) ? $goods_spec['spec_param'] : '',true);
             foreach ($spec_list as $key => $item) {
-                $spec_list[$key]['value'] = !empty(explode(',',$item['value'])) ? explode(',',$item['value']) : !empty(explode(' ',$item['value'])) ? explode(' ',$item['value']) :[];
+                $spec_list[$key]['value'] = !empty(explode(',',$item['value'])) ? explode(',',$item['value']) : (!empty(explode(' ',$item['value'])) ? explode(' ',$item['value']) :[]);
             }
             $goodsdetail['spec_list'] = $spec_list;
         }else{
