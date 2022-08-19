@@ -13,6 +13,8 @@ use controller\BasicApi;
 use Firebase\JWT\JWT;
 use service\WechatService;
 use think\Db;
+use think\facade\Cache;
+use WeMini\Crypt;
 
 class Login extends BasicApi
 {
@@ -74,5 +76,54 @@ class Login extends BasicApi
         $return_data['exp'] = $this->exp;
         $return_data['is_insider'] = $is_insider;
         $this->success('登录成功',$return_data);
+    }
+
+    public function save()
+    {
+        $code = $this->request->param('code');
+        $parent_id = $this->request->param('parent_id/d',0);
+        [$openid, $unionid, ] = $this->_getSessionKey($code);
+        $user = Db::table('store_member')->where('openid',$openid)->find();
+        $token_data = [
+            'iss' => "xianshida",
+            'exp' => $this->exp + time()
+        ];
+        if(empty($user['id'])){
+            $data = [
+                'openid' => $openid,
+                'parent_id' => $parent_id
+            ];
+            $token_data['uid'] = Db::table('store_member')->insertGetId($data);
+
+        } else {
+            $token_data['uid'] = $user['id'];
+        }
+        $token = JWT::encode($token_data, config('jwt_key'));
+        $return_data['token'] = $token;
+        $return_data['exp'] = $this->exp;
+        $return_data['is_insider'] = false;
+        $this->success('登录成功',$return_data);
+    }
+
+    /**
+     * 授权CODE换取会话信息
+     * @param string $code 换取授权CODE
+     * @return array
+     */
+    private function _getSessionKey(string $code)
+    {
+        $cache = Cache::get($code, []);
+        if (isset($cache['openid']) && isset($cache['session_key'])) {
+            return [$cache['openid'], $cache['unionid'] ?? '', $cache['session_key']];
+        }
+        $result = WechatService::WeMiniCrypt()->session($code);
+        if (isset($result['openid']) && isset($result['session_key'])) {
+            Cache::set($code, $result, 60);
+            return [$result['openid'], $result['unionid'] ?? '', $result['session_key']];
+        } elseif (isset($result['errmsg'])) {
+            $this->error($result['errmsg']);
+        } else {
+            $this->error("授权换取失败，请稍候再试！");
+        }
     }
 }

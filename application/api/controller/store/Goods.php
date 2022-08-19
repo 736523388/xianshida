@@ -125,6 +125,10 @@ class Goods extends BasicApi
             ->page($page,$this->pagesize)
             ->field('a.id,a.goods_title,a.goods_logo,huaxian_price,'.$this->price_field)
             ->select();
+        foreach ($list as &$item) {
+            $item['huaxian_price'] = bcadd($item['huaxian_price'],0,2);
+            $item[$this->price_field] = bcadd($item[$this->price_field], 0, 2);
+        }
 //        GoodsService::buildGoodsList($list);
         $this->success('success',$list);
     }
@@ -162,11 +166,13 @@ class Goods extends BasicApi
         $goods = (array)Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0','status' => '1'])->find();
         GoodsService::buildGoodsDetail($goods);
 
+        $goods['activity_info'] = [];
+
         /**
          * 处理活动逻辑
          * @author jungshen
          */
-        $goods['activity_info']=$this->activity_info($goods_id);
+//        $goods['activity_info']=$this->activity_info($goods_id);
         /**
          * 活动逻辑处理完成
          */
@@ -176,28 +182,28 @@ class Goods extends BasicApi
          * 产品分享二维码
          * @author jungshen
          */
-        if($mid){
-            $goods['mid']=$mid;
-            if(isset($goods['activity_info']['type']) && $goods['activity_info']['type'] != ''){
-                $goodscopy = $goods;
-                $thisboj = $this;
-                $thisboj->hide_price_txt = '原价';
-                $goodscopy['spec'][0][$this->price_field] = $goods['activity_info']['activity']['activity_price'];
-                $goodscopy['spec'][0][$this->hide_price_field] = $goods['spec'][0]['market_price'];
-                if($goods['activity_info']['type'] == 'spike'){
-                    $goodscopy['goods_title'] = $goods['activity_info']['activity']['activity_price'].'元秒杀，'.$goodscopy['goods_title'];
-                }
-                elseif ($goods['activity_info']['type'] == 'group'){
-                    $goodscopy['goods_title'] =$goods['activity_info']['activity']['complete_num'].'人拼只需'. $goods['activity_info']['activity']['activity_price'].'元，'.$goodscopy['goods_title'];
-                }
-                $goods['qr_code'] = GoodsService::createGoodsShareImg($goodscopy,$mid,$thisboj);
-            }
-            else{
-                $goods['qr_code'] = GoodsService::createGoodsShareImg($goods,$mid,$this);
-            }
-        }else{
-            $goods['mid']=0;
-        }
+//        if($mid){
+//            $goods['mid']=$mid;
+//            if(isset($goods['activity_info']['type']) && $goods['activity_info']['type'] != ''){
+//                $goodscopy = $goods;
+//                $thisboj = $this;
+//                $thisboj->hide_price_txt = '原价';
+//                $goodscopy['spec'][0][$this->price_field] = $goods['activity_info']['activity']['activity_price'];
+//                $goodscopy['spec'][0][$this->hide_price_field] = $goods['spec'][0]['market_price'];
+//                if($goods['activity_info']['type'] == 'spike'){
+//                    $goodscopy['goods_title'] = $goods['activity_info']['activity']['activity_price'].'元秒杀，'.$goodscopy['goods_title'];
+//                }
+//                elseif ($goods['activity_info']['type'] == 'group'){
+//                    $goodscopy['goods_title'] =$goods['activity_info']['activity']['complete_num'].'人拼只需'. $goods['activity_info']['activity']['activity_price'].'元，'.$goodscopy['goods_title'];
+//                }
+//                $goods['qr_code'] = GoodsService::createGoodsShareImg($goodscopy,$mid,$thisboj);
+//            }
+//            else{
+//                $goods['qr_code'] = GoodsService::createGoodsShareImg($goods,$mid,$this);
+//            }
+//        }else{
+//            $goods['mid']=0;
+//        }
         //分享二维码END
 
         $this->success('success',$goods);
