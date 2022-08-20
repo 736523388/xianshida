@@ -81,28 +81,24 @@ class Login extends BasicApi
     public function save()
     {
         $code = $this->request->param('code');
-        $parent_id = $this->request->param('parent_id/d',0);
         [$openid, $unionid, ] = $this->_getSessionKey($code);
-        $user = Db::table('store_member')->where('openid',$openid)->find();
+        $map = ['openid' => $openid];
+        $user = Db::table('store_member')->where($map)->find();
         $token_data = [
             'iss' => "xianshida",
             'exp' => $this->exp + time()
         ];
         if(empty($user['id'])){
-            $data = [
-                'openid' => $openid,
-                'parent_id' => $parent_id
-            ];
-            $token_data['uid'] = Db::table('store_member')->insertGetId($data);
-
+            $token_data['uid'] = Db::table('store_member')->insertGetId(['openid' => $openid]);
+            $user = Db::table('store_member')->where($map)->find();
         } else {
             $token_data['uid'] = $user['id'];
         }
         $token = JWT::encode($token_data, config('jwt_key'));
-        $return_data['token'] = $token;
-        $return_data['exp'] = $this->exp;
-        $return_data['is_insider'] = false;
-        $this->success('登录成功',$return_data);
+        $user['token'] = [
+            'token' => $token, 'exp' => $this->exp
+        ];
+        $this->success('登录成功', $user);
     }
 
     /**
