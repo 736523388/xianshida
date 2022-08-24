@@ -2,13 +2,13 @@
 
 {block name="button"}
 
-<!--{if auth("$classuri/forbid")}-->
-<button data-update data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</button>
-<!--{/if}-->
+<!--&lt;!&ndash;{if auth("$classuri/forbid")}&ndash;&gt;-->
+<!--<button data-update data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量禁用</button>-->
+<!--&lt;!&ndash;{/if}&ndash;&gt;-->
 
-<!--{if auth("$classuri/resume")}-->
-<button data-update data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量启用</button>
-<!--{/if}-->
+<!--&lt;!&ndash;{if auth("$classuri/resume")}&ndash;&gt;-->
+<!--<button data-update data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量启用</button>-->
+<!--&lt;!&ndash;{/if}&ndash;&gt;-->
 
 <button data-title="赠送优惠券" data-url='{:url("$classuri/send_coupon")}' class='layui-btn layui-btn-sm layui-btn-primary send_coupon'>赠送优惠券</button>
 
@@ -37,41 +37,6 @@
         </div>
     </div>
 
-    <!--{if !empty($levels)}-->
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">会员等级</label>
-        <div class="layui-input-inline">
-            <select name="level">
-                <option value="">所有等级</option>
-                <!--{if $Think.get.level eq '0'}-->
-                <option selected="selected" value="0">{:sysconf('registered_name')}</option>
-                <!--{else}-->
-                <option value="0">{:sysconf('registered_name')}</option>
-                <!--{/if}-->
-                {foreach $levels as $level}
-                <!--{if $Think.get.level eq $level.id}-->
-                <option selected="selected" value="{$level.id}">{$level.level_title}</option>
-                <!--{else}-->
-                <option value="{$level.id}">{$level.level_title}</option>
-                <!--{/if}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
-    <!--{/if}-->
-
-
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">邀请人</label>
-        <div class="layui-input-inline">
-            <select name="parent_id" lay-search>
-                <option value=""> - 全部 - </option>
-                {volist name="members" id="member"}
-                <option value="{$member.id}" {:input('parent_id',0)==$member['id']?'selected':''}>{$member.nickname}</option>
-                {/volist}
-            </select>
-        </div>
-    </div>
 
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">注册时间</label>
@@ -104,15 +69,15 @@
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox' />
             </th>
             <th class='text-left nowrap'>会员昵称[ID]</th>
-            <th class='text-left nowrap'>邀请人</th>
-            <th class='text-left nowrap'>注册时间</th>
-            <th class='text-left nowrap'>会员身份</th>
+<!--            <th class='text-left nowrap'>邀请人</th>-->
+<!--            <th class='text-left nowrap'>会员身份</th>-->
             <!--<th class='text-left nowrap'>团队</th>-->
             <th class='text-left nowrap'>积分</th>
             <!--<th class='text-left nowrap'>个人消费</th>
             <th class='text-left nowrap'>团队消费</th>-->
             <th class='text-left nowrap'>会员状态</th>
             <th class='text-left'></th>
+<!--            <th class='text-left'></th>-->
         </tr>
         </thead>
         <tbody>
@@ -125,57 +90,57 @@
                 <img data-tips-image class="headimg" src="{$vo.headimg}" style="height: 40px;"/>
                 {$vo.nickname|default='<span class="color-desc">未设置微信昵称</span>'}[ID：{$vo.id}]
             </td>
-            <td class='text-left nowrap'>{$vo.parent_member_name}</td>
-            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
-            <td class='text-left nowrap'>
-                <span class="color-green">{$vo.level_title}</span>
-                <br/>
-                {if $vo.level neq 0}
-                <img data-tips-image class="headimg" src="{$vo.wholesaler.img}" style="height: 40px;"/>
-                {/if}
-                <!--{if $vo.level neq '0'}
-                {if $vo.level_duration lt time()}
-                <span class="color-red">过期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>
-                {else}
-                {if ($vo.level_duration-time()) < (60*60*24*7)}
-                <span class="color-red">到期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>
-                {else}
-                <span class="color-desc">到期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>
-                {/if}
-                {/if}
-                {/if}-->
-            </td>
+<!--            <td class='text-left nowrap'>{$vo.parent_member_name}</td>-->
+<!--            <td class='text-left nowrap'>-->
+<!--                <span class="color-green">{$vo.level_title}</span>-->
+<!--                <br/>-->
+<!--                {if $vo.level neq 0}-->
+<!--                <img data-tips-image class="headimg" src="{$vo.wholesaler.img}" style="height: 40px;"/>-->
+<!--                {/if}-->
+<!--                &lt;!&ndash;{if $vo.level neq '0'}-->
+<!--                {if $vo.level_duration lt time()}-->
+<!--                <span class="color-red">过期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>-->
+<!--                {else}-->
+<!--                {if ($vo.level_duration-time()) < (60*60*24*7)}-->
+<!--                <span class="color-red">到期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>-->
+<!--                {else}-->
+<!--                <span class="color-desc">到期时间：{$vo.level_duration|date='Y-m-d H:i'}</span>-->
+<!--                {/if}-->
+<!--                {/if}-->
+<!--                {/if}&ndash;&gt;-->
+<!--            </td>-->
             <td class='text-left nowrap'>当前积分：<span class="color-green">{$vo.integral}</span><br/>累计积分：<span class="color-red">{$vo.integral_total}</span></td>
             <!--<td class='text-left nowrap'>当前：<span class="color-green">{$vo.self_expenditure}</span><br/>累计：<span class="color-red">{$vo.self_expenditure_total}</span></td>
             <td class='text-left nowrap'>当前：<span class="color-green">{$vo.team_expenditure}</span><br/>累计：<span class="color-red">{$vo.team_expenditure_total}</span></td>-->
             <td class='text-left nowrap'>
                 {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">正常</span>{/if}
             </td>
-            <td class='text-left nowrap'>
-                {if auth("$classuri/edit")}
-                <span class="text-explode">|</span>
-                <a data-title="编辑品牌" data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
-                {/if}
+            <td>{$vo.create_at|format_datetime}</td>
+<!--            <td class='text-left nowrap'>-->
+<!--                {if auth("$classuri/edit")}-->
+<!--                <span class="text-explode">|</span>-->
+<!--                <a data-title="编辑品牌" data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>-->
+<!--                {/if}-->
 
-                {if $vo.status eq 1 and auth("$classuri/forbid")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
-                {elseif auth("$classuri/resume")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
-                {/if}
+<!--                {if $vo.status eq 1 and auth("$classuri/forbid")}-->
+<!--                <span class="text-explode">|</span>-->
+<!--                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>-->
+<!--                {elseif auth("$classuri/resume")}-->
+<!--                <span class="text-explode">|</span>-->
+<!--                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>-->
+<!--                {/if}-->
 
-                {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
-                {/if}
+<!--                {if auth("$classuri/del")}-->
+<!--                <span class="text-explode">|</span>-->
+<!--                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>-->
+<!--                {/if}-->
 
-                {if auth("xueao/optometry/add")}
-                <!--<span class="text-explode">|</span>
-                <a data-open="/xueao/optometry/add.html?mid={$vo.id}" data-title="添加验光记录">添加验光记录</a>-->
-                {/if}
+<!--                {if auth("xueao/optometry/add")}-->
+<!--                &lt;!&ndash;<span class="text-explode">|</span>-->
+<!--                <a data-open="/xueao/optometry/add.html?mid={$vo.id}" data-title="添加验光记录">添加验光记录</a>&ndash;&gt;-->
+<!--                {/if}-->
 
-            </td>
+<!--            </td>-->
         </tr>
         {/foreach}
         </tbody>

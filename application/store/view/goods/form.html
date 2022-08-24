@@ -19,39 +19,39 @@
         </div>
     </div>
     <!--{/if}-->
-    <!--{if !empty($brands)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品品牌</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="brand_id" lay-search>
-                {foreach $brands as $brand}
-                <!--{eq name='$brand.id' value='$vo.brand_id|default=0'}-->
-                <option selected="selected" value="{$brand.id}">{$brand.brand_title}</option>
-                <!--{else}-->
-                <option value="{$brand.id}">{$brand.brand_title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
-    <!--{/if}-->
+<!--    &lt;!&ndash;{if !empty($brands)}&ndash;&gt;-->
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">商品品牌</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <select required class="layui-select full-width" name="brand_id" lay-search>-->
+<!--                {foreach $brands as $brand}-->
+<!--                &lt;!&ndash;{eq name='$brand.id' value='$vo.brand_id|default=0'}&ndash;&gt;-->
+<!--                <option selected="selected" value="{$brand.id}">{$brand.brand_title}</option>-->
+<!--                &lt;!&ndash;{else}&ndash;&gt;-->
+<!--                <option value="{$brand.id}">{$brand.brand_title}</option>-->
+<!--                &lt;!&ndash;{/eq}&ndash;&gt;-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;{/if}&ndash;&gt;-->
 
-    <!--{if !empty($ratio_templates)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">分销模板</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="rebate_template_id" lay-search>
-                {foreach $ratio_templates as $ratio_template}
-                <!--{eq name='$ratio_template.id' value='$vo.rebate_template_id|default=0'}-->
-                <option selected="selected" value="{$ratio_template.id}">{$ratio_template.title}</option>
-                <!--{else}-->
-                <option value="{$ratio_template.id}">{$ratio_template.title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
-    <!--{/if}-->
+<!--    &lt;!&ndash;{if !empty($ratio_templates)}&ndash;&gt;-->
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">分销模板</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <select required class="layui-select full-width" name="rebate_template_id" lay-search>-->
+<!--                {foreach $ratio_templates as $ratio_template}-->
+<!--                &lt;!&ndash;{eq name='$ratio_template.id' value='$vo.rebate_template_id|default=0'}&ndash;&gt;-->
+<!--                <option selected="selected" value="{$ratio_template.id}">{$ratio_template.title}</option>-->
+<!--                &lt;!&ndash;{else}&ndash;&gt;-->
+<!--                <option value="{$ratio_template.id}">{$ratio_template.title}</option>-->
+<!--                &lt;!&ndash;{/eq}&ndash;&gt;-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;{/if}&ndash;&gt;-->
 
     <!--{if !empty($cates)}-->
     <div class="form-group">
@@ -70,22 +70,22 @@
     </div>
     <!--{/if}-->
 
-    <!--{if !empty($depots)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品仓库</label>
-        <div class='col-sm-8 text-top'>
-            <select required class="layui-select full-width" name="depot_id">
-                {foreach $depots as $depot}
-                <!--{if isset($vo.depot_id) and $depot.id eq $vo.depot_id}-->
-                <option selected value="{$depot.id}">{$depot.depot_title}</option>
-                <!--{else}-->
-                <option value="{$depot.id}">{$depot.depot_title}</option>
-                <!--{/if}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
-    <!--{/if}-->
+<!--    &lt;!&ndash;{if !empty($depots)}&ndash;&gt;-->
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">商品仓库</label>-->
+<!--        <div class='col-sm-8 text-top'>-->
+<!--            <select required class="layui-select full-width" name="depot_id">-->
+<!--                {foreach $depots as $depot}-->
+<!--                &lt;!&ndash;{if isset($vo.depot_id) and $depot.id eq $vo.depot_id}&ndash;&gt;-->
+<!--                <option selected value="{$depot.id}">{$depot.depot_title}</option>-->
+<!--                &lt;!&ndash;{else}&ndash;&gt;-->
+<!--                <option value="{$depot.id}">{$depot.depot_title}</option>-->
+<!--                &lt;!&ndash;{/if}&ndash;&gt;-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;{/if}&ndash;&gt;-->
 
     <div class="form-group">
         <label class="col-sm-2 control-label">商品名称</label>
