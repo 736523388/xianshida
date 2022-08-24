@@ -26,6 +26,8 @@ class IntegralLog extends BasicUserApi
     public function balance()
     {
         $member = Db::table('store_member')->where('id',UID)->field('integral,integral_total')->find();
+        $member['integral'] = $member['integral'] + 0;
+        $member['integral_total'] = $member['integral_total'] + 0;
         $this->success('success', $member);
     }
 }
