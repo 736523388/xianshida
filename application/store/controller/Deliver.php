@@ -122,9 +122,13 @@ class Deliver extends BasicAdmin
         $param['LogisticCode']=$express_no;
 
         $res=$kdniaoService->getOrderTracesByJson($param);
-        array_multisort(array_column($res['Traces'],'AcceptTime'),SORT_DESC,$res['Traces']);
-        $res['Shipper']=$company_title;
-        $this->assign('result',$res);
+        try{
+            array_multisort(array_column($res['Traces'],'AcceptTime'),SORT_DESC,$res['Traces']);
+            $res['Shipper']=$company_title;
+            $this->assign('result',$res);
+        }catch (\Exception $e){
+            $this->assign('result', []);
+        }
         return $this->fetch();
     }
 
