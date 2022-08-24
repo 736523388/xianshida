@@ -28,8 +28,8 @@ use WeChat\Pay;
  */
 class WeChatPayService
 {
-     protected static $goodsOrderNotifyUrl = 'https://hzzs.j.xueao400.com/api/base.wxnotify/goods_order';
-     protected static $goodsLevelNotifyUrl = 'https://hzzs.j.xueao400.com/api/base.wxnotify/level_order';
+     protected static $goodsOrderNotifyUrl = 'https://xianshida.test.cqclxsc.com/api/base.wxnotify/goods_order';
+     protected static $goodsLevelNotifyUrl = 'https://xianshida.test.cqclxsc.com/api/base.wxnotify/level_order';
     /**
      * @Notes: 定义一个函数获取客户端IP地址定义一个函数获取客户端IP地址
      * @return array|false|string
