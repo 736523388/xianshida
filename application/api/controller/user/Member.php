@@ -48,7 +48,7 @@ class Member extends BasicUserApi
             [
                 'show' => true,
                 'title' => '可使用积分',
-                'value' => $member['integral'],
+                'value' => $member['integral']+0,
                 'nuit' => ''
             ],
             [

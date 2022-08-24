@@ -22,4 +22,10 @@ class IntegralLog extends BasicUserApi
         $list = (array)Db::name($this->tahle)->where(['mid' => UID,'status' => '1','is_deleted' => '0'])->order('create_at desc')->page($page,$this->pagesize)->select();
         $this->success('success',['data' => $list,'pagesize' => $this->pagesize]);
     }
+
+    public function balance()
+    {
+        $member = Db::table('store_member')->where('id',UID)->field('integral,integral_total')->find();
+        $this->success('success', $member);
+    }
 }
