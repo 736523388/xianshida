@@ -35,24 +35,16 @@
             <p class="help-block">填写满多少金额可以使用，不填或填写0为不限制。</p>
         </div>
     </div>
-    <legend>基本规则</legend>
     <div class="form-group">
-        <label class="col-sm-2 control-label label-required">
-            等级限制
+        <label class="col-sm-2 control-label">
+            积分价值
         </label>
         <div class="col-sm-8">
-            {foreach [0=>'否',1=>'是'] as $k=>$v}
-            <label class="think-radio">
-                <!--{eq name="k" value="$vo.level_limits|default='0'"}-->
-                <input checked type="radio" name="level_limits" value="{$k}" title="{$v}" lay-ignore>
-                <!--{else}-->
-                <input type="radio" name="level_limits" value="{$k}" title="{$v}" lay-ignore>
-                <!--{/eq}-->
-                {$v}
-            </label>
-            {/foreach}
+            <input name="integral" type="number" value='{$vo.integral|default=""}' required title="请输入积分数量" placeholder="请输入数量" class="layui-input">
+            <p class="help-block">兑换所需积分数量。</p>
         </div>
     </div>
+    <legend>基本规则</legend>
     {if isset($levels)}
     <div class="form-group" data-level-limits-type="1">
         <label class="col-sm-2 control-label label-required"></label>
@@ -79,34 +71,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label label-required">
-            有效期
-        </label>
-        <div class="col-sm-8">
-            {foreach [1=>'固定日期',2=>'动态日期'] as $k=>$v}
-            <label class="think-radio">
-                <!--{eq name="k" value="$vo.time_type|default='1'"}-->
-                <input checked type="radio" name="time_type" value="{$k}" title="{$v}" lay-ignore>
-                <!--{else}-->
-                <input type="radio" name="time_type" value="{$k}" title="{$v}" lay-ignore>
-                <!--{/eq}-->
-                {$v}
-            </label>
-            {/foreach}
-        </div>
-    </div>
-    <div class="form-group" data-time-type="1">
-        <label class="col-sm-2 control-label"></label>
+        <label class="col-sm-2 control-label">有效期</label>
         <div class='col-sm-8'>
             <input name="coupon_time" id="coupon_time" required value="{$vo.coupon_time|default=''}" placeholder="请选择有效期" class="layui-input">
             <p class="help-block">在固定日期范围内有效</p>
-        </div>
-    </div>
-    <div class="form-group" data-time-type="2">
-        <label class="col-sm-2 control-label"></label>
-        <div class='col-sm-8'>
-            <input type="number" required name="coupon_day" value='{$vo.coupon_day|default=""}'  title="请输入天数" placeholder="请输入天数" class="layui-input">
-            <p class="help-block">自领券当日开始N天内有效</p>
         </div>
     </div>
     <div class="form-group">

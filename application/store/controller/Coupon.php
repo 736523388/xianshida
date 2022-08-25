@@ -121,6 +121,9 @@ class Coupon extends BasicAdmin
 
             $this->_form_assign();
         }else{
+            if(!isset($data['level_limits'])) $data['level_limits'] = 0;
+            if(!isset($data['time_type'])) $data['time_type'] = 1;
+
             if($data['level_limits']=='1'){
                 if (isset($data['use_level']) && is_array($data['use_level'])) {
                     sort($data['use_level']);
