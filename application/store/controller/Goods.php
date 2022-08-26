@@ -124,6 +124,7 @@ class Goods extends BasicAdmin
     {
         if ($this->request->isGet()) {
             $this->title = '添加商品';
+            $this->assign('isAddMode', '1');
             $this->_form_assign();
             return $this->_form($this->table, 'form');
         }
@@ -162,11 +163,13 @@ class Goods extends BasicAdmin
             $goods['tags_id'] = explode(',', isset($goods['tags_id']) ? $goods['tags_id'] : '');
             $goods['insider_back_ratio'] = json_decode($goods['insider_back_ratio'],true);
             $goods['ordinary_back_ratio'] = json_decode($goods['ordinary_back_ratio'],true);
+            $this->assign('isAddMode', '0');
             $this->_form_assign();
             return $this->fetch('form', ['vo' => $goods, 'title' => '编辑商品']);
         }
         try {
             $data = $this->_form_build_data();
+            unset($data['main']['spec_id']);
             $goods_id = $this->request->post('id');
             $goods = Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
             empty($goods) && $this->error('商品编辑失败，请稍候再试！');
@@ -311,7 +314,8 @@ class Goods extends BasicAdmin
                 $goods['huaxian_price'] = $post['huaxian_price'][$key];
                 $goods['market_price'] = $post['market_price'][$key];
 //                $goods['selling_price'] = $post['selling_price'][$key];
-                $goods['status'] = intval(!empty($post['spec_status'][$key]));
+//                $goods['status'] = intval(!empty($post['spec_status'][$key]));
+                $goods['status'] = 1;
                 !empty($goods['status']) && $verify = true;
                 $list[] = $goods;
             }
