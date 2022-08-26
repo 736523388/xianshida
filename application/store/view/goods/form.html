@@ -222,10 +222,9 @@
                 <thead>
                 <tr>
                     <th>商品规格</th>
-                    <th>划线价格</th>
-                    <th>零售价格</th>
-                    <th>批发价格</th>
-                    <th>成本价</th>
+                    <th>售价</th>
+                    <th>原价（划线价）</th>
+<!--                    <th>批发价格</th>-->
                     <th>规格状态</th>
                 </tr>
                 </thead>
@@ -239,17 +238,15 @@
                         </span>
                     </td>
                     <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="huaxian_price[]" value="{{x.huaxian_price}}">
-                    </td>
-                    <td class="price-input-td">
                         <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="market_price[]" value="{{x.market_price}}">
                     </td>
                     <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="selling_price[]" value="{{x.selling_price}}">
+                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="huaxian_price[]" value="{{x.huaxian_price}}">
                     </td>
-                    <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="cost_price[]" value="{{x.cost_price}}">
-                    </td>
+
+<!--                    <td class="price-input-td">-->
+<!--                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="selling_price[]" value="{{x.selling_price}}">-->
+<!--                    </td>-->
                     <td>
                         <label class="nowrap line-height-18">
                             <input type="hidden" name="spec_status[]" value="{{x.status?1:0}}">
@@ -326,7 +323,7 @@
                 var specs = eval(this.options[this.selectedIndex].getAttribute('data-param'));
                 for (var i in specs) {
                     specs[i].param = [];
-                    var values = specs[i].value.split(' ');
+                    var values = specs[i].value.split(';;');
                     for (var j in values) {
                         specs[i].param.push({
                             name: specs[i].name, value: values[j],
@@ -397,8 +394,7 @@
                             spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
                             huaxian_price: parseFloat(this.getData(specs[i], 'huaxian_price') || '0').toFixed(2),
                             market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
-                            selling_price: parseFloat(this.getData(specs[i], 'selling_price') || '0').toFixed(2),
-                            cost_price: parseFloat(this.getData(specs[i], 'cost_price') || '0').toFixed(2),
+                            // selling_price: parseFloat(this.getData(specs[i], 'selling_price') || '0').toFixed(2),
                             status: this.getData(specName, 'status') !== '0'
                         });
                     }

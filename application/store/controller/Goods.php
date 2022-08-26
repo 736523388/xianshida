@@ -310,8 +310,7 @@ class Goods extends BasicAdmin
                 $goods['goods_spec'] = $value;
                 $goods['huaxian_price'] = $post['huaxian_price'][$key];
                 $goods['market_price'] = $post['market_price'][$key];
-                $goods['selling_price'] = $post['selling_price'][$key];
-                $goods['cost_price'] = $post['cost_price'][$key];
+//                $goods['selling_price'] = $post['selling_price'][$key];
                 $goods['status'] = intval(!empty($post['spec_status'][$key]));
                 !empty($goods['status']) && $verify = true;
                 $list[] = $goods;
