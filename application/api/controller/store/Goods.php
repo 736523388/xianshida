@@ -162,48 +162,13 @@ class Goods extends BasicApi
      */
     public function detail(){
         $goods_id = $this->request->param('id');
-        Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0','status' => '1'])->setInc('browse',1);
+
         $goods = (array)Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0','status' => '1'])->find();
+        if(empty($goods)) $this->error("网络异常，请稍后再试~");
+        Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0','status' => '1'])->setInc('browse',1);
+
         GoodsService::buildGoodsDetail($goods);
-
         $goods['activity_info'] = [];
-
-        /**
-         * 处理活动逻辑
-         * @author jungshen
-         */
-//        $goods['activity_info']=$this->activity_info($goods_id);
-        /**
-         * 活动逻辑处理完成
-         */
-        $mid=get_login_info($this->request->param('token',''),'id');
-
-        /**
-         * 产品分享二维码
-         * @author jungshen
-         */
-//        if($mid){
-//            $goods['mid']=$mid;
-//            if(isset($goods['activity_info']['type']) && $goods['activity_info']['type'] != ''){
-//                $goodscopy = $goods;
-//                $thisboj = $this;
-//                $thisboj->hide_price_txt = '原价';
-//                $goodscopy['spec'][0][$this->price_field] = $goods['activity_info']['activity']['activity_price'];
-//                $goodscopy['spec'][0][$this->hide_price_field] = $goods['spec'][0]['market_price'];
-//                if($goods['activity_info']['type'] == 'spike'){
-//                    $goodscopy['goods_title'] = $goods['activity_info']['activity']['activity_price'].'元秒杀，'.$goodscopy['goods_title'];
-//                }
-//                elseif ($goods['activity_info']['type'] == 'group'){
-//                    $goodscopy['goods_title'] =$goods['activity_info']['activity']['complete_num'].'人拼只需'. $goods['activity_info']['activity']['activity_price'].'元，'.$goodscopy['goods_title'];
-//                }
-//                $goods['qr_code'] = GoodsService::createGoodsShareImg($goodscopy,$mid,$thisboj);
-//            }
-//            else{
-//                $goods['qr_code'] = GoodsService::createGoodsShareImg($goods,$mid,$this);
-//            }
-//        }else{
-//            $goods['mid']=0;
-//        }
         //分享二维码END
 
         $this->success('success',$goods);
