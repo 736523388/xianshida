@@ -193,6 +193,7 @@
             </td>
             <td class="text-left nowrap text-top">
                 <!--品牌：{$vo.brand.brand_title|default='<span class="color-desc">未配置品牌</span>'|raw}<br>-->
+                商品名称：{$vo.goods_title|default='--'}<br>
                 分类：{if empty($vo.cate)}<span class="color-desc">未配置分类</span>{else}
                 {foreach $vo.cate as $k=>$cate}{$cate.cate_title}
                 {if $k+1 < count($vo.cate)}<span class="layui-icon font-s12">&#xe602;</span>{/if}
@@ -207,18 +208,18 @@
                     {foreach $vo.spec as $spec}
                     <tr>
                         <td>
-                            [{$spec.goods_id}] [规格编号：{$spec.id}] {$spec.goods_title|default=''|raw}
+                            [{$spec.goods_id}] [规格编号：{$spec.id}]
                             <span class="layui-badge layui-bg-gray">{$spec.goods_spec_alias|raw}</span>
                         </td>
                         <td class="text-right nowrap">
-                            <span class="layui-badge layui-bg-gray">批发价 {$spec.selling_price} ( 零售价 {$spec.market_price} ) </span>
+                            <span class="layui-badge layui-bg-gray">售价 {$spec.market_price} ( 原价 {$spec.huaxian_price} ) </span>
                             <span class="layui-badge layui-bg-gray">存 {$spec.goods_stock} ( 剩 {$spec.goods_stock-$spec.goods_sale}, 售 {$spec.goods_sale} ) </span>
                         </td>
                     </tr>
                     {/foreach}
                 </table>
             </td>
-            <td class='text-left nowrap text-top'>
+            <td class='text-center nowrap text-top'>
                 {$vo.create_at|format_datetime|str_replace=' ','<br>',###|raw}
                 {if $vo.status eq '0'}<span class="color-red margin-left-10">已下架</span>{elseif $vo.status eq '1'}<span class="color-green margin-left-10">销售中</span>{/if}
             </td>

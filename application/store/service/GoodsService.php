@@ -62,7 +62,7 @@ class GoodsService
         }
         // 读取商品详情列表
         $specWhere = [['status', 'eq', '1'], ['is_deleted', 'eq', '0'], ['goods_id', 'in', array_column($goodsList, 'id')]];
-        $specField = 'id,goods_id,goods_spec,goods_number,market_price,selling_price,goods_stock,goods_sale';
+        $specField = 'id,goods_id,goods_spec,goods_number,huaxian_price,market_price,selling_price,goods_stock,goods_sale';
         $specList = Db::name('StoreGoodsList')->where($specWhere)->column($specField);
         foreach ($specList as $key => $spec) {
             foreach ($goodsList as $goods) {
