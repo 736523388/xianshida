@@ -51,21 +51,21 @@
     <!--{/if}-->
 
     <!--{if !empty($depots)}-->
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">仓库名称</label>
-        <div class="layui-input-inline">
-            <select name="depot_id" lay-search>
-                <option value="">仓库名称</option>
-                {foreach $depots as $depot}
-                <!--{if $Think.get.depot_id eq $depot.id}-->
-                <option selected="selected" value="{$depot.id}">{$depot.depot_title}</option>
-                <!--{else}-->
-                <option value="{$depot.id}">{$depot.depot_title}</option>
-                <!--{/if}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">仓库名称</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select name="depot_id" lay-search>-->
+<!--                <option value="">仓库名称</option>-->
+<!--                {foreach $depots as $depot}-->
+<!--                &lt;!&ndash;{if $Think.get.depot_id eq $depot.id}&ndash;&gt;-->
+<!--                <option selected="selected" value="{$depot.id}">{$depot.depot_title}</option>-->
+<!--                &lt;!&ndash;{else}&ndash;&gt;-->
+<!--                <option value="{$depot.id}">{$depot.depot_title}</option>-->
+<!--                &lt;!&ndash;{/if}&ndash;&gt;-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
     <!--{/if}-->
 
     <!--{if !empty($types)}-->
@@ -172,7 +172,7 @@
                 <table class="think-inner-table layui-table">
                     <thead>
                     <tr>
-                        <td>商品信息</td>
+                        <td>规格</td>
                         <td class="text-right nowrap">售价 ( 标价 ) / 库存 ( 剩余, 已售 )</td>
                     </tr>
                     </thead>
@@ -193,7 +193,7 @@
             </td>
             <td class="text-left nowrap text-top">
                 <!--品牌：{$vo.brand.brand_title|default='<span class="color-desc">未配置品牌</span>'|raw}<br>-->
-                商品名称：{$vo.goods_title|default='--'}<br>
+                商品名称：{$vo.goods_title|default='--'}[{$vo.id}]<br>
                 分类：{if empty($vo.cate)}<span class="color-desc">未配置分类</span>{else}
                 {foreach $vo.cate as $k=>$cate}{$cate.cate_title}
                 {if $k+1 < count($vo.cate)}<span class="layui-icon font-s12">&#xe602;</span>{/if}
@@ -208,7 +208,7 @@
                     {foreach $vo.spec as $spec}
                     <tr>
                         <td>
-                            [{$spec.goods_id}] [规格编号：{$spec.id}]
+                             [编号:{$spec.id}]
                             <span class="layui-badge layui-bg-gray">{$spec.goods_spec_alias|raw}</span>
                         </td>
                         <td class="text-right nowrap">

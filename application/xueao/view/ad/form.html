@@ -27,28 +27,6 @@
     </div>
     <!--{/if}-->
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">跳转目标</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="target">
-                {assign name="target" value="$vo.target|default=''" /}
-                <option {$target=='_parent'?'selected':''} value="_parent">父窗口</option>
-                <option {$target=='_blank'?'selected':''} value="_blank">新窗口</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">展示对象</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="identity">
-                {assign name="identity" value="$vo.identity|default=''" /}
-                <option {$identity=='0'?'selected':''} value="0">不限</option>
-                <option {$identity=='1'?'selected':''} value="1">会员</option>
-                <option {$identity=='2'?'selected':''} value="2">批发商</option>
-            </select>
-        </div>
-    </div>
 
     <div class="form-group">
         <label class="col-sm-2 control-label label-required">图片</label>
@@ -71,17 +49,8 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">链接类型</label>
-        <div class='col-sm-8'>
-            {foreach ['1'=>'链接到商品','2' => '链接到地址'] as $k=>$v}
-            <input type="radio" name="target_type" value="{$k}" {:isset($vo['target_type'])&&$vo['target_type']==$k?'checked':''} title="{$v}" lay-filter="data-ad-type"/>
-            {/foreach}
-        </div>
-    </div>
-
     <div>
-        <!--<div data-ad-type="0" class="form-group">
+        <div class="form-group">
             <label class="col-sm-2 control-label">选择商品</label>
             <div class='col-sm-8'>
                 {notempty name='goods_list'}
@@ -96,30 +65,9 @@
                 </select>
                 {/notempty}
             </div>
-        </div>-->
-
-        <div data-ad-type="1" class="form-group">
-            <label class="col-sm-2 control-label">广告目标</label>
-            <div class='col-sm-8'>
-                <input name="url" value='{$vo.url|default=""}'  title="请输入广告目标" placeholder="请输入广告目标" class="layui-input">
-            </div>
         </div>
     </div>
 
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">排序</label>
-        <div class='col-sm-8'>
-            <input name="sort" value='{$vo.sort|default="0"}'  title="请输入排序值" placeholder="请输入排序值" class="layui-input">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">备注</label>
-        <div class='col-sm-8'>
-            <textarea placeholder="请输入描述" title="请输入描述" class="layui-textarea" name="remark">{$vo.remark|default=""}</textarea>
-        </div>
-    </div>
 
     <div class="hr-line-dashed"></div>
 

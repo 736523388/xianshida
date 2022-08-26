@@ -149,13 +149,13 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品重量</label>
-        <div class='col-sm-8'>
-            <input name="weight" type="number" required value="{$vo.weight|default=''}" class="layui-input" title="请输入商品重量" placeholder="请输入商品重量">
-            <p class="help-block">单位Kg。</p>
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">商品重量</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <input name="weight" type="number" required value="{$vo.weight|default=''}" class="layui-input" title="请输入商品重量" placeholder="请输入商品重量">-->
+<!--            <p class="help-block">单位Kg。</p>-->
+<!--        </div>-->
+<!--    </div>-->
     <!--<div class="form-group">
         <label class="col-sm-2 control-label">服务内容</label>
         <div class='col-sm-8'>
@@ -186,81 +186,66 @@
                 </tr>
                 </tbody>
             </table>
+            <script>$('[name="goods_logo"]').uploadOneImage(), $('[name="goods_image"]').uploadMultipleImage()</script>
         </div>
     </div>
-
-    <!-- 普通商品及积分商品 开始 -->
     <div class="form-group">
-
-        <label class="col-sm-2 control-label">商品规格</label>
+        <label class="col-sm-2 control-label label-required">商品规格</label>
         <div class='col-sm-8'>
-            <span class="color-red font-s12">（规格填写后不允许再次修改）</span>
-            <select ng-if="isAddMode" required class="layui-select full-width block" name="spec_id" lay-ignore>
-                {foreach $specs as $spec}
-                {php}$param=str_replace('"',"'",$spec['spec_param']);{/php}
-                <!--{eq name='spec.id' value='$vo.spec_id|default=0'}-->
-                <option data-param="{$param}" selected="selected" value="{$spec.id}">{$spec.spec_title}</option>
-                <!--{else}-->
-                <option data-param="{$param}" value="{$spec.id}">{$spec.spec_title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-            <table class="layui-table notevent" lay-size="sm" ng-if="isAddMode&&specs.length>0">
-                <tr>
-                    <th>可选规格</th>
-                    <th>规格内容</th>
-                </tr>
-                <tr ng-repeat="x in specs">
-                    <td ng-bind="x.name"></td>
-                    <td>
-                        <label ng-repeat="m in x.param" class="nowrap margin-right-10 line-height-18">
-                            <input data-spec="{{x.name}}_{{m.value}}" ng-model="m.checked" class="inline-block" type="checkbox" lay-ignore>
-                            <span ng-bind="m.value"></span>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <table class="layui-table notevent" lay-size="sm">
-                <thead>
-                <tr>
-                    <th>商品规格</th>
-                    <th>售价</th>
-                    <th>原价（划线价）</th>
-<!--                    <th>批发价格</th>-->
-<!--                    <th>规格状态</th>-->
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-class="x.status?'':'layui-bg-gray'" ng-repeat="x in specdata">
-                    <td class="nowrap">
-                        <input type="hidden" name="goods_spec[]" value="{{x.spec_name}}">
-                        <span ng-repeat="a in x.spec_attrs">
-                            <span class="layui-badge layui-bg-blue" ng-bind="a.name"></span>
-                            <span ng-if="b" class="layui-badge layui-bg-green" ng-repeat="b in a.value" ng-bind="b"></span>
-                        </span>
-                    </td>
-                    <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="market_price[]" value="{{x.market_price}}">
-                    </td>
-                    <td class="price-input-td">
-                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="huaxian_price[]" value="{{x.huaxian_price}}">
-                    </td>
-
-<!--                    <td class="price-input-td">-->
-<!--                        <input onblur="this.value=(parseFloat(this.value)||0).toFixed(2)" class="layui-input" placeholder="0.00" name="selling_price[]" value="{{x.selling_price}}">-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <label class="nowrap line-height-18">-->
-<!--                            <input type="hidden" name="spec_status[]" value="{{x.status?1:0}}">-->
-<!--                            <input ng-checked="x.status" ng-model="x.status" value="1" lay-ignore class="inline-block" type="checkbox"/> 启用-->
-<!--                        </label>-->
-<!--                    </td>-->
-                </tr>
-                </tbody>
-            </table>
+        <span class="color-green label-required-prev">商品规格及商品SKU绑定<span class="color-red font-s12">（规格填写后不允许再次修改）</span></span>
+        <div ng-repeat="x in specs track by $index" style="display:none" class="margin-bottom-10" ng-class="{true:'layui-show'}[isAddMode&&specs.length>0]">
+            <div class="goods-spec-box padding-10 margin-0 relative" style="background:#ddd">
+                <span class="text-center goods-spec-title">分组</span>
+                <label class="label-required-null inline-block"><input ng-blur="x.name=trimSpace(x.name)" ng-model="x.name" required placeholder="请输入分组名称"></label>
+                <div class="pull-right">
+                    <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="addSpecVal(x.list)">增加</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index>0]" ng-click="upSpecRow(specs,$index)">上移</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-class="{false:'layui-bg-gray'}[$index<specs.length-1]" ng-click="dnSpecRow(specs,$index)">下移</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary goods-spec-btn" ng-click="delSpecRow(specs,$index)" ng-if="specs.length>1">删除</a>
+                </div>
+            </div>
+            <div class="goods-spec-box padding-10 margin-0 layui-bg-gray block relative" ng-if="x.list && x.list.length > 0">
+                <label class="label-required-null inline-block margin-right-10 margin-bottom-5 relative nowrap" ng-repeat="xx in x.list">
+                    <input type="checkbox" lay-ignore ng-model="xx.check" ng-click="xx.check=checkListChecked(x.list,$event.target.checked)">
+                    <input type="text" ng-blur="xx.name=trimSpace(xx.name)" ng-model="xx.name" ng-keyup="xx.name=$event.target.value" required placeholder="请输入规格">
+                    <a ng-if="x.list.length>1" ng-click="x.list=delSpecVal(x.list,$index)" class="layui-icon layui-icon-close font-s12 goods-spec-close"></a>
+                </label>
+            </div>
+        </div>
+        <a ng-if="isAddMode&&specs.length<3" class="layui-btn layui-btn-sm layui-btn-primary" ng-click="addSpecRow(specs)">增加分组</a>
+        <table class="layui-table margin-top-10">
+            <thead>
+            <tr>
+                <th ng-repeat="x in specsTreeNava track by $index" class="nowrap" ng-bind="x"></th>
+                <th width="10%" class="text-center nowrap">销售价格 <a ng-click="batchSet('market',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+                <th width="10%" class="text-center nowrap">市场价格 <a ng-click="batchSet('huaxian',2)" data-tips-text="批量设置" class="layui-icon">&#xe63c;</a></th>
+<!--                <th width="10%" class="text-center nowrap">销售状态</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="rows in specsTreeData track by $index">
+                <td class="layui-bg-gray" ng-if="td.show" rowspan="{{td.span}}" ng-repeat="td in rows" ng-bind="td.name"></td>
+                <td class="padding-0">
+                    <label class="padding-0 margin-0">
+                        <input ng-blur="rows[0].market=setValue(rows[0].key,'market',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].market">
+                    </label>
+                </td>
+                <td class="padding-0">
+                    <label class="padding-0 margin-0">
+                        <input ng-blur="rows[0].selling=setValue(rows[0].key,'selling',$event.target.value,'(parseFloat(_)||0).toFixed(2)')" class="layui-input border-0 padding-left-0 text-center" ng-model="rows[0].huaxian">
+                    </label>
+                </td>
+<!--                <td class="text-center layui-bg-gray">-->
+<!--                    <label class="think-checkbox margin-0 full-width full-height block"><input lay-ignore type="checkbox" ng-model="rows[0].status"></label>-->
+<!--                </td>-->
+            </tr>
+            </tbody>
+        </table>
+<!--        <p class="color-desc">请从仓储平台获取商品SKU与商品条码，请注意尽量不要重复，也不能产生订单后再修改！</p>-->
+        <textarea class="layui-textarea layui-hide" name="specs">{{specs}}</textarea>
+        <textarea class="layui-textarea layui-hide" name="lists">{{specsTreeData}}</textarea>
         </div>
     </div>
-    <!-- 普通商品及积分商品 结束 -->
 
     <!--<div class="form-group">-->
         <!--<label class="col-sm-2 control-label">视频展示</label>-->
@@ -301,149 +286,256 @@
     </div>
 
 </form>
-
+<textarea class="layui-hide" id="goods-specs">{$vo.specs|raw|default=''}</textarea>
+<textarea class="layui-hide" id="goods-value">{$defaultValues|raw|default=''}</textarea>
 <script>
+    window.form.render();
     require(['jquery', 'ckeditor', 'angular'], function () {
-        window.form.render();
+
         window.createEditor('[name="goods_content"]', {height: 500});
         var app = angular.module("ProductForm", []).run(callback);
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 
         function callback($rootScope) {
             $rootScope.isAddMode = parseInt('{$isAddMode|default=0}');
-            // 绑定规格列表
-            $rootScope.specs = [];
-            // 规格默认数据
-            var specdata = JSON.parse('{$vo.list|default=[]|json_encode=###,256|raw}');
-            // 单图片上传处理
-            $('#ProductForm [name="goods_logo"]').uploadOneImage();
-            // 多图片上传处理
-            $('#ProductForm [name="goods_image"]').uploadMultipleImage();
-            // 规格显示切换
-            $('#ProductForm').on('click', '[data-spec]', applySpecData);
-            // 商品规格切换
-            $('#ProductForm').on('change', '[name="spec_id"]', function () {
-                var specs = eval(this.options[this.selectedIndex].getAttribute('data-param'));
-                for (var i in specs) {
-                    specs[i].param = [];
-                    var values = specs[i].value.split(';;');
-                    for (var j in values) {
-                        specs[i].param.push({
-                            name: specs[i].name, value: values[j],
-                            checked: getSpecStatus(specs[i].name, values[j])
-                        });
-                    }
-                }
-                $rootScope.$apply(function () {
-                    $rootScope.specs = specs;
-                    setTimeout(applySpecData, 10);
+            $rootScope.maps = JSON.parse(angular.element('#goods-value').val() || '[]') || {};
+            $rootScope.specs = JSON.parse(angular.element('#goods-specs').val() || '[{"name":"默认分组","list":[{"name":"默认规格","check":true}]}]');
+
+            // 批量设置数值
+            $rootScope.batchSet = function (type, fixed) {
+                layer.prompt({title: '请输入数值', formType: 0}, function (value, index) {
+                    $rootScope.$apply(function () {
+                        var val = (parseFloat(value) || 0).toFixed(fixed);
+                        for (var i in $rootScope.specsTreeData) for (var j in $rootScope.specsTreeData[i]) {
+                            $rootScope.specsTreeData[i][j][type] = val;
+                        }
+                    });
+                    layer.close(index);
                 });
-            }).find('[name="spec_id"]').trigger('change');
-
-            // 规格属性切换
-            function applySpecData() {
-                var params = {};
-                for (var i in $rootScope.specs) {
-                    var isChecked = false;
-                    for (var j in $rootScope.specs[i].param) {
-                        if ($rootScope.specs[i].param[j].checked) {
-                            isChecked = true;
-                            var name = $rootScope.specs[i].param[j].name;
-                            var value = $rootScope.specs[i].param[j].value;
-                            (params[name] || (params[name] = [])).push({name: name, value: value});
-                        }
-                    }
-                    if (!isChecked) {
-                        $rootScope.specs[i].param[0].checked = true;
-                        var name = $rootScope.specs[i].param[0].name;
-                        var value = $rootScope.specs[i].param[0].value;
-                        (params[name] || (params[name] = [])).push({name: name, value: value});
-                    }
-                }
-                $rootScope.$apply(function () {
-                    $rootScope.specdata = DataArray.render(params);
-                });
-            }
-
-            // 获取规格选择状态
-            function getSpecStatus(name, spec) {
-                for (var i in specdata) {
-                    let onchecck = ',' + specdata[i].goods_spec + ',';
-                    if (onchecck.indexOf(',' + name + ':' + spec + ',') > -1) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            // 数据处理
-            var DataArray = new function () {
-                // 编译生成规格数据
-                this.render = function (data) {
-                    var specs = [], list = [];
-                    for (var i in data) {
-                        specs = this.joinArray(data[i], specs, i);
-                    }
-                    (specs.length < 1) && (specs = ['default:default']);
-                    for (var i in specs) {
-                        var specName = specs[i];
-                        var specTitle = (specName === 'default:default') ? '默认规格' : specName.replace(/,/ig, ';').replace(/:/ig, ':');
-                        var specAttrs = [], lines = specTitle.split(';');
-                        for (var j in lines) {
-                            var line = lines[j].split(':');
-                            specAttrs.push({name: line[0], value: (line[1] || '').split(',')});
-                        }
-                        list.push({
-                            spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
-                            huaxian_price: parseFloat(this.getData(specs[i], 'huaxian_price') || '0').toFixed(2),
-                            market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
-                            // selling_price: parseFloat(this.getData(specs[i], 'selling_price') || '0').toFixed(2),
-                            status: this.getData(specName, 'status') !== '0'
-                        });
-                    }
-                    return list;
-                };
-                // 读取规格默认数据
-                this.getData = function (spec, field) {
-                    for (var i in specdata) {
-                        if (specdata[i].goods_spec === spec) {
-                            return specdata[i][field] || '0';
-                        }
-                    }
-                    return '1';
-                };
-                // 数组交叉计算
-                this.joinArray = function (item, list, pk) {
-                    var _list = [];
-                    for (var i in item) {
-                        if (list.length > 0) {
-                            for (var j in list) {
-                                _list.push(list[j] + ',' + pk + ':' + item[i].value);
-                            }
-                        } else {
-                            _list.push(pk + ':' + item[i].value);
-                        }
-                    }
-                    return _list;
-                }
             };
+            // 设置默认值
+            $rootScope.setValue = function (key, type, value, call) {
+                $rootScope.maps[key] || ($rootScope.maps[key] = {});
+                return $rootScope.maps[key][type] = eval(call.replace('_', "'" + value + "'"));
+            };
+            // 读取默认值
+            $rootScope.getValue = function (key, callback) {
+                if (typeof callback === 'function') {
+                    return callback($rootScope.maps[key] || {});
+                }
+                return {};
+            };
+
+            // 去除空白字符
+            $rootScope.trimSpace = function (value) {
+                return (value + '').replace(/\s*/ig, '');
+            };
+            // 生成交叉表格数据
+            $rootScope.specsTreeData = [];
+            $rootScope.specsTreeNava = [];
+
+            // 当前商品规格发生变化时重新计算规格列表
+            $rootScope.$watch('specs', function () {
+                var data = $rootScope.specs, list = [], navs = [], table = [[]];
+                // 过滤无效记录
+                for (var i in data) {
+                    var tmp = [];
+                    for (var j in data[i].list) if (data[i].list[j].check && data[i].list[j].name.length > 0) {
+                        data[i].list[j].span = 1, data[i].list[j].show = true, data[i].list[j].group = data[i].name;
+                        tmp.push(data[i].list[j]);
+                    }
+                    list.push(tmp), navs.push(data[i].name);
+                }
+                $rootScope.specsTreeNava = navs;
+                // 表格交叉
+                for (var i in list) {
+                    var tmp = [];
+                    for (var j in table) for (var k in list[i]) tmp.push(table[j].concat(list[i][k]));
+                    table = tmp;
+                }
+                // 表格合并
+                list = angular.fromJson(angular.toJson(table));
+                for (var i in list) {
+                    var key = [], _key = '';
+                    for (var td in list[i]) key.push(list[i][td].group + '::' + list[i][td].name);
+                    for (var td in list[i]) if (_key.length === 0) {
+                        list[i][0].key = _key = key.join(';;');
+                        list[i][0].market = $rootScope.getValue(_key, function (data) {
+                            return data.market || '0.00';
+                        });
+                        list[i][0].huaxian = $rootScope.getValue(_key, function (data) {
+                            return data.huaxian || '0.00';
+                        });
+                        list[i][0].status = $rootScope.getValue(_key, function (data) {
+                            return !!(typeof data.status !== 'undefined' ? data.status : true);
+                        });
+                    }
+                }
+                $rootScope.specsTreeData = list;
+            }, true);
+            // 判断规则是否能取消选择
+            $rootScope.checkListChecked = function (list, check) {
+                for (var i in list) if (list[i].check) return check;
+                return true;
+            };
+            // 增加整行规格分组
+            $rootScope.addSpecRow = function (data) {
+                data.push({name: '规格分组', list: [{name: '规格属性', check: true}]})
+            };
+            // 下移整行规格分组
+            $rootScope.dnSpecRow = function (data, $index) {
+                var tmp = [], cur = data[$index];
+                if ($index > data.length - 2) return false;
+                for (var i in data) {
+                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
+                    (parseInt(i) === parseInt($index) + 1) && tmp.push(cur);
+                }
+                return $rootScope.specs = tmp;
+            };
+            // 上移整行规格分组
+            $rootScope.upSpecRow = function (data, $index) {
+                var tmp = [], cur = data[$index];
+                if ($index < 1) return false;
+                for (var i in data) {
+                    (parseInt(i) === parseInt($index) - 1) && tmp.push(cur);
+                    (parseInt(i) !== parseInt($index)) && tmp.push(data[i]);
+                }
+                return $rootScope.specs = tmp;
+            };
+            // 移除整行规格分组
+            $rootScope.delSpecRow = function (data, $index) {
+                var tmp = [];
+                for (var i in data) if (parseInt(i) !== parseInt($index)) tmp.push(data[i]);
+                return $rootScope.specs = tmp;
+            };
+            // 增加分组的属性
+            $rootScope.addSpecVal = function (list) {
+                list.push({name: '规格属性', check: true});
+            };
+            // 移除分组的属性
+            $rootScope.delSpecVal = function (data, $index) {
+                var temp = [];
+                for (var i in data) if (parseInt(i) !== parseInt($index)) temp.push(data[i]);
+                return temp;
+            };
+            // // 绑定规格列表
+            // $rootScope.specs = [];
+            // // 规格默认数据
+            // var specdata = JSON.parse('{$vo.list|default=[]|json_encode=###,256|raw}');
+            // // 单图片上传处理
+            // $('#ProductForm [name="goods_logo"]').uploadOneImage();
+            // // 多图片上传处理
+            // $('#ProductForm [name="goods_image"]').uploadMultipleImage();
+            // // 规格显示切换
+            // $('#ProductForm').on('click', '[data-spec]', applySpecData);
+            // // 商品规格切换
+            // $('#ProductForm').on('change', '[name="spec_id"]', function () {
+            //     var specs = eval(this.options[this.selectedIndex].getAttribute('data-param'));
+            //     for (var i in specs) {
+            //         specs[i].param = [];
+            //         var values = specs[i].value.split(';;');
+            //         for (var j in values) {
+            //             specs[i].param.push({
+            //                 name: specs[i].name, value: values[j],
+            //                 checked: getSpecStatus(specs[i].name, values[j])
+            //             });
+            //         }
+            //     }
+            //     $rootScope.$apply(function () {
+            //         $rootScope.specs = specs;
+            //         setTimeout(applySpecData, 10);
+            //     });
+            // }).find('[name="spec_id"]').trigger('change');
+            //
+            // // 规格属性切换
+            // function applySpecData() {
+            //     var params = {};
+            //     for (var i in $rootScope.specs) {
+            //         var isChecked = false;
+            //         for (var j in $rootScope.specs[i].param) {
+            //             if ($rootScope.specs[i].param[j].checked) {
+            //                 isChecked = true;
+            //                 var name = $rootScope.specs[i].param[j].name;
+            //                 var value = $rootScope.specs[i].param[j].value;
+            //                 (params[name] || (params[name] = [])).push({name: name, value: value});
+            //             }
+            //         }
+            //         if (!isChecked) {
+            //             $rootScope.specs[i].param[0].checked = true;
+            //             var name = $rootScope.specs[i].param[0].name;
+            //             var value = $rootScope.specs[i].param[0].value;
+            //             (params[name] || (params[name] = [])).push({name: name, value: value});
+            //         }
+            //     }
+            //     $rootScope.$apply(function () {
+            //         $rootScope.specdata = DataArray.render(params);
+            //     });
+            // }
+            //
+            // // 获取规格选择状态
+            // function getSpecStatus(name, spec) {
+            //     for (var i in specdata) {
+            //         let onchecck = ',' + specdata[i].goods_spec + ',';
+            //         if (onchecck.indexOf(',' + name + ':' + spec + ',') > -1) {
+            //             return true;
+            //         }
+            //     }
+            //     return false;
+            // }
+            //
+            // // 数据处理
+            // var DataArray = new function () {
+            //     // 编译生成规格数据
+            //     this.render = function (data) {
+            //         var specs = [], list = [];
+            //         for (var i in data) {
+            //             specs = this.joinArray(data[i], specs, i);
+            //         }
+            //         (specs.length < 1) && (specs = ['default:default']);
+            //         for (var i in specs) {
+            //             var specName = specs[i];
+            //             var specTitle = (specName === 'default:default') ? '默认规格' : specName.replace(/,/ig, ';').replace(/:/ig, ':');
+            //             var specAttrs = [], lines = specTitle.split(';');
+            //             for (var j in lines) {
+            //                 var line = lines[j].split(':');
+            //                 specAttrs.push({name: line[0], value: (line[1] || '').split(',')});
+            //             }
+            //             list.push({
+            //                 spec_name: specName, spec_title: specTitle, spec_attrs: specAttrs,
+            //                 huaxian_price: parseFloat(this.getData(specs[i], 'huaxian_price') || '0').toFixed(2),
+            //                 market_price: parseFloat(this.getData(specs[i], 'market_price') || '0').toFixed(2),
+            //                 // selling_price: parseFloat(this.getData(specs[i], 'selling_price') || '0').toFixed(2),
+            //                 status: this.getData(specName, 'status') !== '0'
+            //             });
+            //         }
+            //         return list;
+            //     };
+            //     // 读取规格默认数据
+            //     this.getData = function (spec, field) {
+            //         for (var i in specdata) {
+            //             if (specdata[i].goods_spec === spec) {
+            //                 return specdata[i][field] || '0';
+            //             }
+            //         }
+            //         return '1';
+            //     };
+            //     // 数组交叉计算
+            //     this.joinArray = function (item, list, pk) {
+            //         var _list = [];
+            //         for (var i in item) {
+            //             if (list.length > 0) {
+            //                 for (var j in list) {
+            //                     _list.push(list[j] + ',' + pk + ':' + item[i].value);
+            //                 }
+            //             } else {
+            //                 _list.push(pk + ':' + item[i].value);
+            //             }
+            //         }
+            //         return _list;
+            //     }
+            // };
         }
     });
-</script>
-<script>
-    (function () {
-        <!-- 是否限购-->
-        buildForm("data-open-quantity-type","{$vo.is_quantity|default='0'}");
-        $('[name=is_quantity]').on('click', function () {
-            buildForm("data-open-quantity-type",$('[name=is_quantity]:checked').val())
-        });
-
-        // 表单显示编译
-        function buildForm(obj,value) {
-            let $tips = $("[" + obj + "='" + value + "']");
-            $("[" + obj + "]").not($tips.show()).hide();
-        }
-    })();
 </script>
 {/block}
 

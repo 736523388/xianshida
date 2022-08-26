@@ -19,6 +19,7 @@ use controller\BasicAdmin;
 use service\DataService;
 use service\ToolsService;
 use think\Db;
+use think\db\Query;
 use think\exception\HttpResponseException;
 
 /**
@@ -122,14 +123,29 @@ class Goods extends BasicAdmin
      */
     public function add()
     {
+        $this->title = '添加商品';
+        $this->assign('isAddMode', '1');
+        $this->_form($this->table, 'form');
         if ($this->request->isGet()) {
-            $this->title = '添加商品';
-            $this->assign('isAddMode', '1');
+
+
             $this->_form_assign();
             return $this->_form($this->table, 'form');
         }
         try {
-            $data = $this->_form_build_data();
+//            $data = $this->_form_build_data();
+            $data['lists'] = json_decode($this->request->post('lists'), true);
+            $data['list'] = [];
+            foreach ($data['lists'] as $list) {
+                $data['list'][] = [
+                    'goods_id'       => 0,
+                    'goods_spec'     => $list[0]['key'],
+                    'huaxian_price'   => $list[0]['huaxian'],
+                    'market_price'  => $list[0]['market'],
+                    'status'         => 1,
+                ];
+            }
+            dump($data);exit();
             Db::transaction(function () use ($data) {
                 $goodsID = Db::name($this->table)->insertGetId($data['main']);
                 foreach ($data['list'] as &$vo) {
@@ -155,6 +171,10 @@ class Goods extends BasicAdmin
      */
     public function edit()
     {
+        $this->title = '编辑商品';
+        $this->assign('isAddMode', '0');
+        $this->_form($this->table, 'form');
+
         if (!$this->request->isPost()) {
             $goods_id = $this->request->get('id');
             $goods = Db::name($this->table)->where(['id' => $goods_id, 'is_deleted' => '0'])->find();
@@ -164,6 +184,9 @@ class Goods extends BasicAdmin
             $goods['insider_back_ratio'] = json_decode($goods['insider_back_ratio'],true);
             $goods['ordinary_back_ratio'] = json_decode($goods['ordinary_back_ratio'],true);
             $this->assign('isAddMode', '0');
+            $fields = 'goods_spec,goods_id,huaxian_price huaxian,market_price market';
+            $defaultValues = Db::name('StoreGoodsList')->where(['goods_id' => $goods_id, 'is_deleted' => '0'])->column($fields);
+            $this->assign('defaultValues', json_encode($defaultValues, JSON_UNESCAPED_UNICODE));
             $this->_form_assign();
             return $this->fetch('form', ['vo' => $goods, 'title' => '编辑商品']);
         }
@@ -223,6 +246,88 @@ class Goods extends BasicAdmin
         }
         list($base, $query, $url) = [url('@admin'), $this->request->get('q'), url('store/goods/index')];
         $this->success('商品编辑成功！', "{$base}#{$url}?{$query}");
+    }
+
+    /**
+     * 唯一数字编码
+     * @param integer $length
+     * @return string
+     */
+    public static function uniqidNumberCode($length = 10)
+    {
+        $time = time() . '';
+        if ($length < 10) $length = 10;
+        $string = ($time[0] + $time[1]) . substr($time, 2) . rand(0, 9);
+        while (strlen($string) < $length) $string .= rand(0, 9);
+        return $string;
+    }
+
+    /**
+     * 数据增量保存
+     * @param Query|string $dbQuery 数据查询对象
+     * @param array $data 需要保存或更新的数据
+     * @param string $key 条件主键限制
+     * @param array $where 其它的where条件
+     * @return boolean|integer
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public static function dataSave($dbQuery, $data, $key = 'id', $where = [])
+    {
+        $db = is_string($dbQuery) ? Db::name($dbQuery) : $dbQuery;
+        list($table, $value) = [$db->getTable(), $data[$key] ?? null];
+        $map = isset($where[$key]) ? [] : (is_string($value) ? [[$key, 'in', explode(',', $value)]] : [$key => $value]);
+        if (is_array($info = Db::table($table)->master()->where($where)->where($map)->find()) && !empty($info)) {
+            if (Db::table($table)->strict(false)->where($where)->where($map)->update($data) !== false) {
+                return isset($info[$key]) ? $info[$key] : true;
+            } else {
+                return false;
+            }
+        } else {
+            return Db::table($table)->strict(false)->insertGetId($data);
+        }
+    }
+
+    protected function _form_filter(&$data)
+    {
+        // 生成商品ID
+        if (empty($data['id'])) $data['id'] = self::uniqidNumberCode();
+        if($this->request->isGet()){
+            $fields = 'goods_spec,goods_id,huaxian_price huaxian,market_price market';
+            $defaultValues = Db::name('StoreGoodsList')->where(['goods_id' => $data['id'], 'is_deleted' => '0'])->column($fields);
+            $this->assign('defaultValues', json_encode($defaultValues, JSON_UNESCAPED_UNICODE));
+
+            $cates = (array)Db::name('StoreGoodsCate')->where(['status' => '1', 'is_deleted' => '0'])->order('sort asc,id desc')->select();
+            $this->assign('cates', ToolsService::arr2table($cates));
+        } elseif ($this->request->isPost()){
+            if (empty($data['goods_logo'])) $this->error('商品LOGO不能为空，请上传图片');
+            if (empty($data['goods_image'])) $this->error('商品展示图片不能为空，请上传图片');
+            Db::name('StoreGoodsList')->where(['goods_id' => $data['id']])->update(['status' => '0']);
+            foreach (json_decode($data['lists'], true) as $vo) {
+                self::dataSave('StoreGoodsList', [
+                    'goods_id'       => $data['id'],
+                    'goods_spec'     => $vo[0]['key'],
+                    'huaxian_price'   => $vo[0]['huaxian'],
+                    'market_price'  => $vo[0]['market'],
+                    'status'         => 1,
+                ], 'goods_spec', ['goods_id' => $data['id']]);
+            }
+//            Db::name('StoreGoodsList')->insertAll($list);
+//            dump($data);exit();
+        }
+//        dump($data);
+    }
+
+    /**
+     * 表单结果处理
+     * @param boolean $result
+     */
+    protected function _form_result($result)
+    {
+        if ($result && $this->request->isPost()) {
+            list($base, $query, $url) = [url('@admin'), $this->request->get('q'), url('store/goods/index')];
+            $this->success('商品编辑成功！', "{$base}#{$url}?{$query}");
+        }
     }
 
     /**

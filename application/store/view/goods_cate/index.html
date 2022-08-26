@@ -54,6 +54,11 @@
             </td>
             <td class='text-center nowrap'>
 
+                {if auth("$classuri/add") && $vo.spt < 1}
+                <span class="text-explode">|</span>
+                <a data-title="添加分类" data-modal='{:url("@$classuri/add")}?pid={$vo.id}'>添加分类</a>
+                {/if}
+
                 {if auth("$classuri/edit")}
                 <span class="text-explode">|</span>
                 <a data-title="编辑分类" data-modal='{:url("@$classuri/edit")}?id={$vo.id}'>编辑</a>

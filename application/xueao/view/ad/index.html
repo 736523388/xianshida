@@ -72,14 +72,17 @@
         <thead>
         <tr>
             <th class='list-table-check-td think-checkbox'>
-                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
+                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
             </th>
             <th class='text-left nowrap'>ID</th>
             <th class='text-left nowrap'>广告名称</th>
-            <th class='text-left nowrap'>展示对象</th>
+<!--            <th class='text-left nowrap'>展示对象</th>-->
             <th class='text-left nowrap'>分类</th>
-            <th class='text-left nowrap'>目标类型</th>
-            <th class='text-left nowrap'>跳转地址</th>
+<!--            <th class='text-left nowrap'>目标类型</th>-->
+            <th class='text-left nowrap'>商品ID</th>
             <th class='text-left nowrap'>添加时间</th>
             <th class='text-left nowrap'>状态</th>
             <th class='text-left'>操作</th>
@@ -88,14 +91,17 @@
         <tbody>
         {foreach $list as $key=>$vo}
         <tr>
-            <td class='list-table-check-td think-checkbox'>
-                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            <td class='list-table-check-td text-top think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='list-table-sort-td text-top'>
+                <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input">
             </td>
             <td class='text-left nowrap'>{$vo.id}</td>
             <td class='text-left nowrap'>{$vo.name}</td>
-            <td class='text-left nowrap'>{$vo.identity==0?'不限':''}{$vo.identity==1?'会员':''}{$vo.identity==2?'批发商':''}</td>
+<!--            <td class='text-left nowrap'>{$vo.identity==0?'不限':''}{$vo.identity==1?'会员':''}{$vo.identity==2?'批发商':''}</td>-->
             <td class='text-left nowrap'>{$vo.type}</td>
-            <td class='text-left nowrap'>{$vo.target_type==1?'产品':'地址'}</td>
+<!--            <td class='text-left nowrap'>{$vo.target_type==1?'产品':'地址'}</td>-->
             <td class='text-left nowrap'>{$vo.url}</td>
             <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
             <td class='text-left nowrap'>

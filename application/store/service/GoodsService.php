@@ -73,7 +73,7 @@ class GoodsService
             if ($spec['goods_spec'] === 'default:default') {
                 $specList[$key]['goods_spec_alias'] = '默认规格';
             } else {
-                $specList[$key]['goods_spec_alias'] = str_replace([':', ','], [': ', ', '], $spec['goods_spec']);
+                $specList[$key]['goods_spec_alias'] = str_replace(['::', ';;'], [' ', ', '], $spec['goods_spec']);
             }
         }
         // 商品数据组装

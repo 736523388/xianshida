@@ -79,6 +79,7 @@ class Ad extends XueaoAdmin
                 $data['status']=1;
                 $data['create_at']=date('Y-m-d H:i:s');
             }
+            $data['target_type']=0;
             if($data['target_type']==0){
                 $data['url']=$data['goods_id'];
             }

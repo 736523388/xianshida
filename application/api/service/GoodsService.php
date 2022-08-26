@@ -91,6 +91,21 @@ class GoodsService
         if (empty($goodsdetail)) {
             return ['code' => 1, 'msg' => 'success', 'data' => []];
         }
+        $goodsdetail['specs'] = json_decode($goodsdetail['specs'], 1);
+        foreach ($goodsdetail['specs'] as $key => $value) {
+            $dd = [];
+            foreach ($value['list'] as $item) {
+                $dd[] = [
+                    'spec_title' => $item['name'],
+                    'is_show' => $item['show'],
+                    'is_seleted' => false,
+                    'is_elective' => true
+                ];
+            }
+            $goodsdetail['specs'][$key]['value'] = $dd;
+            unset($goodsdetail['specs'][$key]['list']);
+        }
+        $goodsdetail['spec_list'] = $goodsdetail['specs'];
         // 商品分类处理
         $cateField = 'id,pid,cate_title,cate_desc';
         $cateWhere = ['status' => '1', 'is_deleted' => '0'];
@@ -123,10 +138,15 @@ class GoodsService
         $specField = 'id,goods_id,goods_spec,goods_number,huaxian_price,market_price,selling_price,goods_stock,goods_sale';
         $specList = Db::name('StoreGoodsList')->where($specWhere)->column($specField);
         foreach ($specList as $key => $spec) {
+            $goods_spec_alias_arr = [];
+            foreach (explode(';;', $spec['goods_spec']) as $item) {
+                $goods_spec_alias_arr[] = explode('::', $item)[1];
+            }
+            $specList[$key]['goods_spec_alias_arr'] = $goods_spec_alias_arr;
             if ($spec['goods_spec'] === 'default:default') {
                 $specList[$key]['goods_spec_alias'] = '默认规格';
             } else {
-                $specList[$key]['goods_spec_alias'] = str_replace([':', ','], [': ', ', '], $spec['goods_spec']);
+                $specList[$key]['goods_spec_alias'] = str_replace(['::', ';;'], [' ', ', '], $spec['goods_spec']);
             }
         }
         // 商品品牌处理
@@ -174,8 +194,6 @@ class GoodsService
                 $spec_list[$key]['value'] = !empty(explode(';;', $item['value'])) ? explode(';;', $item['value']) : [];
             }
             $goodsdetail['spec_list'] = array_filter($spec_list);
-        } else {
-            $goodsdetail['spec_list'] = [];
         }
         return ['code' => 1, 'msg' => 'success', 'data' => $goodsdetail];
     }

@@ -10,7 +10,7 @@
 <!--<button data-update data-field='status' data-value='1' data-action='{:url("$classuri/resume")}' class='layui-btn layui-btn-sm layui-btn-primary'>批量启用</button>-->
 <!--&lt;!&ndash;{/if}&ndash;&gt;-->
 
-<button data-title="赠送优惠券" data-url='{:url("$classuri/send_coupon")}' class='layui-btn layui-btn-sm layui-btn-primary send_coupon'>赠送优惠券</button>
+<!--<button data-title="赠送优惠券" data-url='{:url("$classuri/send_coupon")}' class='layui-btn layui-btn-sm layui-btn-primary send_coupon'>赠送优惠券</button>-->
 
 {/block}
 
@@ -19,15 +19,15 @@
 <form autocomplete="off" class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
 
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">会员昵称</label>
+        <label class="layui-form-label">客户昵称</label>
         <div class="layui-input-inline">
-            <input name="nickname" value="{$Think.get.nickname}" placeholder="请输入会员昵称" class="layui-input">
+            <input name="nickname" value="{$Think.get.nickname}" placeholder="请输入客户昵称" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">会员ID</label>
+        <label class="layui-form-label">客户ID</label>
         <div class="layui-input-inline">
-            <input name="user_id" value="{$Think.get.user_id}" placeholder="请输入会员ID" class="layui-input">
+            <input name="user_id" value="{$Think.get.user_id}" placeholder="请输入客户ID" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-inline">
@@ -69,12 +69,14 @@
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox' />
             </th>
             <th class='text-left nowrap'>会员昵称[ID]</th>
+            <th class='text-left nowrap'>手机号码</th>
 <!--            <th class='text-left nowrap'>邀请人</th>-->
 <!--            <th class='text-left nowrap'>会员身份</th>-->
             <!--<th class='text-left nowrap'>团队</th>-->
+
             <th class='text-left nowrap'>积分</th>
-            <!--<th class='text-left nowrap'>个人消费</th>
-            <th class='text-left nowrap'>团队消费</th>-->
+            <th class='text-left nowrap'>累计消费</th>
+            <!--<th class='text-left nowrap'>团队消费</th>-->
             <th class='text-left nowrap'>会员状态</th>
             <th class='text-left'></th>
 <!--            <th class='text-left'></th>-->
@@ -88,8 +90,14 @@
             </td>
             <td class='text-left nowrap'>
                 <img data-tips-image class="headimg" src="{$vo.headimg}" style="height: 40px;"/>
-                {$vo.nickname|default='<span class="color-desc">未设置微信昵称</span>'}[ID：{$vo.id}]
+                {notempty name='vo.nickname'}
+                {$vo.nickname|default='--'}
+                {else}
+                <span class="color-desc">未设置微信昵称</span>
+                {/notempty}
+                [ID：{$vo.id}]
             </td>
+            <td>{$vo.phone|default='-'}</td>
 <!--            <td class='text-left nowrap'>{$vo.parent_member_name}</td>-->
 <!--            <td class='text-left nowrap'>-->
 <!--                <span class="color-green">{$vo.level_title}</span>-->
@@ -110,8 +118,8 @@
 <!--                {/if}&ndash;&gt;-->
 <!--            </td>-->
             <td class='text-left nowrap'>当前积分：<span class="color-green">{$vo.integral}</span><br/>累计积分：<span class="color-red">{$vo.integral_total}</span></td>
-            <!--<td class='text-left nowrap'>当前：<span class="color-green">{$vo.self_expenditure}</span><br/>累计：<span class="color-red">{$vo.self_expenditure_total}</span></td>
-            <td class='text-left nowrap'>当前：<span class="color-green">{$vo.team_expenditure}</span><br/>累计：<span class="color-red">{$vo.team_expenditure_total}</span></td>-->
+            <td class='text-left nowrap'><span class="color-red">{$vo.self_expenditure_total}</span></td>
+            <!--<td class='text-left nowrap'>当前：<span class="color-green">{$vo.team_expenditure}</span><br/>累计：<span class="color-red">{$vo.team_expenditure_total}</span></td>-->
             <td class='text-left nowrap'>
                 {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">正常</span>{/if}
             </td>

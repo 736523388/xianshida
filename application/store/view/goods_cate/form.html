@@ -1,5 +1,6 @@
 <form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
 
+    {if $addMode == '0'}
     <div class="layui-form-item">
         <label class="layui-form-label">商品主分类</label>
         <div class="layui-input-block">
@@ -14,6 +15,7 @@
             </select>
         </div>
     </div>
+    {/if}
     <div class="layui-form-item">
         <label class="layui-form-label">首页推荐</label>
         <div class="layui-input-block">
@@ -36,13 +38,13 @@
             <script>$('[name=image]').uploadOneImage()</script>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">分类大图</label>
-        <div class="layui-input-block">
-            <input type="hidden" name="image_cover" value="{$vo.image_cover|default=''}">
-            <script>$('[name=image_cover]').uploadOneImage()</script>
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">分类大图</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="hidden" name="image_cover" value="{$vo.image_cover|default=''}">-->
+<!--            <script>$('[name=image_cover]').uploadOneImage()</script>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="layui-form-item">
         <label class="layui-form-label">商品分类</label>

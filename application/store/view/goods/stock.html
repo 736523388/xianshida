@@ -20,7 +20,7 @@
                 {foreach $vo.list as $spec}
                 <tr>
                     <td>
-                        {$spec.goods_spec|str_replace=['default:default',',',':'],['默认规格','，','：'],###}
+                        {$spec.goods_spec|str_replace=['default:default','::',';;'],['默认规格',' ',','],###}
                     </td>
                     <td style="padding:0">
                         <input name="spec[]" value="{$spec.goods_spec}" type="hidden">

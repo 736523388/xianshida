@@ -100,8 +100,8 @@ class GoodsCate extends BasicAdmin
         if ($this->request->isGet()) {
             // 读取上级分类
             $where = ['status' => '1', 'is_deleted' => '0'];
-            $_cates = (array)Db::name($this->table)->where($where)->order('sort desc,id desc')->select();
-            array_unshift($_cates, ['id' => 0, 'pid' => -1, 'cate_title' => '--- 顶级分类 ---']);
+            $_cates = (array)Db::name($this->table)->where($where)->order('sort asc,id desc')->select();
+//            array_unshift($_cates, ['id' => 0, 'pid' => -1, 'cate_title' => '--- 顶级分类 ---']);
             $cates = ToolsService::arr2table($_cates);
             foreach ($cates as $key => &$cate) {
                 if (isset($vo['pid'])) {
@@ -113,6 +113,14 @@ class GoodsCate extends BasicAdmin
             }
             $this->assign('cates', $cates);
         }
+        $addMode = '0';
+        if(!isset($vo['pid'])){
+            $vo['pid'] = $this->request->request('pid', 0);
+            if($vo['pid'] == 0){
+                $addMode = '1';
+            }
+        }
+        $this->assign('addMode', $addMode);
     }
 
     /**
