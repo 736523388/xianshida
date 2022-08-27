@@ -47,7 +47,19 @@ class Deliver extends BasicAdmin
      */
     public function express()
     {
-        $order_no = $this->request->get('order_no');
+//        $order_no = $this->request->get('order_no');
+        $order_no = $this->request->post('id', '');
+        $data = [
+            'order_no' => $order_no,
+            'way' => 1,
+            'send_at'  => date('Y-m-d H:i:s')
+        ];
+        if (DataService::save('StoreOrderExpress', $data, 'order_no')) {
+            //将订单状态改为已发货
+            Db::name('store_order')->where('order_no',$order_no)->setField('status',3);
+            $this->success('发货成功！', '');
+        }
+        $this->error('发货失败，请稍候再试！');
         if ($this->request->isGet()) {
             $order = Db::name('StoreOrder')->where([
                 'order_no' => $order_no,

@@ -177,4 +177,20 @@ class Member extends BasicUserApi
         $this->success('success',$item);
     }
 
+    public function set_nickname()
+    {
+        $nickname = $this->request->post('nickname', '');
+        if(empty($nickname)) $this->error('保存失败，请稍后再试~');
+        Db::name('store_member')->where('id',UID)->setField('nickname', $nickname);
+        $this->success('保存成功');
+    }
+
+    public function set_portrait()
+    {
+        $headimg = $this->request->post('headimg', '');
+        if(empty($headimg)) $this->error('保存失败，请稍后再试~');
+        Db::name('store_member')->where('id',UID)->setField('headimg', $headimg);
+        $this->success('保存成功');
+    }
+
 }
