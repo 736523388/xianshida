@@ -33,6 +33,7 @@ class Address extends BasicUserApi
     public function create(){
         try{
             $data = [
+                'store_name' => $this->request->param('store_name'),
                 'username' => $this->request->param('username'),
                 'phone' => $this->request->param('phone'),
                 'province' => $this->request->param('province'),
@@ -110,6 +111,7 @@ class Address extends BasicUserApi
     public function edit(){
         try{
             $data = [
+                'store_name' => $this->request->param('store_name'),
                 'username' => $this->request->param('username'),
                 'phone' => $this->request->param('phone'),
                 'province' => $this->request->param('province'),

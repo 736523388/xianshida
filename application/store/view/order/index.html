@@ -98,26 +98,26 @@
         </div>
     </div>
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">订单描述</label>
-        <div class="layui-input-inline">
-            <input name="order_desc" value="{$Think.get.order_desc}" placeholder="请输入订单描述" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">订单描述</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="order_desc" value="{$Think.get.order_desc}" placeholder="请输入订单描述" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">物流公司</label>
-        <div class="layui-input-inline">
-            <input name="company_title" value="{$Think.get.company_title}" placeholder="请输入物流公司" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">物流公司</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="company_title" value="{$Think.get.company_title}" placeholder="请输入物流公司" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">快递单号</label>
-        <div class="layui-input-inline">
-            <input name="send_no" value="{$Think.get.send_no}" placeholder="请输入快递单号" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">快递单号</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="send_no" value="{$Think.get.send_no}" placeholder="请输入快递单号" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="layui-form-item layui-inline">
         <label class="layui-form-label">收货姓名</label>
@@ -133,33 +133,33 @@
         </div>
     </div>
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">收货省份</label>
-        <div class="layui-input-inline">
-            <input name="express_province" value="{$Think.get.express_province}" placeholder="请输入收货省份" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">收货省份</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="express_province" value="{$Think.get.express_province}" placeholder="请输入收货省份" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">收货城市</label>
-        <div class="layui-input-inline">
-            <input name="express_city" value="{$Think.get.express_city}" placeholder="请输入收货城市" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">收货城市</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="express_city" value="{$Think.get.express_city}" placeholder="请输入收货城市" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">收货区域</label>
-        <div class="layui-input-inline">
-            <input name="express_area" value="{$Think.get.express_area}" placeholder="请输入收货区域" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">收货区域</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="express_area" value="{$Think.get.express_area}" placeholder="请输入收货区域" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="layui-form-item layui-inline">
-        <label class="layui-form-label">详细地址</label>
-        <div class="layui-input-inline">
-            <input name="express_address" value="{$Think.get.express_address}" placeholder="请输入详细地址" class="layui-input">
-        </div>
-    </div>
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">详细地址</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input name="express_address" value="{$Think.get.express_address}" placeholder="请输入详细地址" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
 
 
     <div class="layui-form-item layui-inline">
@@ -266,28 +266,28 @@
                 </table>
             </td>
             <td class="text-left text-top nowrap">
-                {if empty($vo.express)}
-                <span class="color-desc">无发货信息</span>
-                {else}
-                {if $vo['status']>2}
-                {if $vo['express']['way']==1}
-                快递公司：{$vo.express.send_company_title|default=$vo.express.company_title}
-                <br>
-                快递单号：{$vo.express.send_no|default='--'}
-                {else/}
-                取货门店：{$vo.express.store_id|getmodel='store','title'}
-                {/if}
-                {else/}
-                <span class="layui-badge layui-bg-black">未发货</span>
-                {/if}
-                {if auth('store/deliver/tracking') and !empty($vo.express.send_no)}
-                <a data-modal="{:url('store/deliver/tracking')}?express_code={$vo.express.send_company_code}&express_no={$vo.express.send_no}&company_title={$vo.express.send_company_title}" data-title="追踪物流">查看物流</a>
-                {elseif auth('store/deliver/express') and $vo.status eq 2 and $vo.is_pay eq 1}
-                {if $vo.status eq 2 and $vo.is_pay eq 1 and ($vo.type eq 1 || ($vo.type eq 2 and $vo.success_time gt 0) || $vo.type eq 3)}
-                <a data-title="快速发货" data-modal="{:url('store/deliver/express')}?order_no={$vo.order_no}">快速发货</a>
-                {/if}
-                {/if}
-                <br>
+<!--                {if empty($vo.express)}-->
+<!--                <span class="color-desc">无发货信息</span>-->
+<!--                {else}-->
+<!--                {if $vo['status']>2}-->
+<!--                {if $vo['express']['way']==1}-->
+<!--                快递公司：{$vo.express.send_company_title|default=$vo.express.company_title}-->
+<!--                <br>-->
+<!--                快递单号：{$vo.express.send_no|default='&#45;&#45;'}-->
+<!--                {else/}-->
+<!--                取货门店：{$vo.express.store_id|getmodel='store','title'}-->
+<!--                {/if}-->
+<!--                {else/}-->
+<!--                <span class="layui-badge layui-bg-black">未发货</span>-->
+<!--                {/if}-->
+<!--                {if auth('store/deliver/tracking') and !empty($vo.express.send_no)}-->
+<!--                <a data-modal="{:url('store/deliver/tracking')}?express_code={$vo.express.send_company_code}&express_no={$vo.express.send_no}&company_title={$vo.express.send_company_title}" data-title="追踪物流">查看物流</a>-->
+<!--                {elseif auth('store/deliver/express') and $vo.status eq 2 and $vo.is_pay eq 1}-->
+<!--                {if $vo.status eq 2 and $vo.is_pay eq 1 and ($vo.type eq 1 || ($vo.type eq 2 and $vo.success_time gt 0) || $vo.type eq 3)}-->
+<!--                <a data-title="快速发货" data-modal="{:url('store/deliver/express')}?order_no={$vo.order_no}">快速发货</a>-->
+<!--                {/if}-->
+<!--                {/if}-->
+<!--                <br>-->
                 收货信息：{$vo.express.express_username} {$vo.express.express_phone}<br>
                 收货地址：{$vo.express.express_province}{$vo.express.express_city}{$vo.express.express_area}{$vo.express.express_address}
                 {if auth('store/order/address')}<a data-title="修改收货人信息" data-modal="{:url('order/address')}?order_no={$vo.order_no}">修改</a>{/if}

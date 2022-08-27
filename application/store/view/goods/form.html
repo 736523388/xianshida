@@ -4,20 +4,20 @@
 <form autocomplete="off" onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" id="ProductForm" class='form-horizontal layui-form padding-top-20'>
 
     <!--{if !empty($types)}-->
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品类型</label>
-        <div class='col-sm-8'>
-            <select required class="layui-select full-width" name="type_id">
-                {foreach $types as $type}
-                <!--{eq name='$type.id' value='$vo.type_id|default=0'}-->
-                <option selected="selected" value="{$type.id}">{$type.type_title}</option>
-                <!--{else}-->
-                <option value="{$type.id}">{$type.type_title}</option>
-                <!--{/eq}-->
-                {/foreach}
-            </select>
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">商品类型</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <select required class="layui-select full-width" name="type_id">-->
+<!--                {foreach $types as $type}-->
+<!--                &lt;!&ndash;{eq name='$type.id' value='$vo.type_id|default=0'}&ndash;&gt;-->
+<!--                <option selected="selected" value="{$type.id}">{$type.type_title}</option>-->
+<!--                &lt;!&ndash;{else}&ndash;&gt;-->
+<!--                <option value="{$type.id}">{$type.type_title}</option>-->
+<!--                &lt;!&ndash;{/eq}&ndash;&gt;-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
     <!--{/if}-->
 <!--    &lt;!&ndash;{if !empty($brands)}&ndash;&gt;-->
 <!--    <div class="form-group">-->
