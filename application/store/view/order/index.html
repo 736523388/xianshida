@@ -288,7 +288,8 @@
 <!--                {/if}-->
 <!--                {/if}-->
 <!--                <br>-->
-                收货信息：{$vo.express.express_username} {$vo.express.express_phone}<br>
+                收货店铺：{$vo.express.express_store_name} <br>
+                收货人信息：{$vo.express.express_username} {$vo.express.express_phone}<br>
                 收货地址：{$vo.express.express_province}{$vo.express.express_city}{$vo.express.express_area}{$vo.express.express_address}
                 {if auth('store/order/address')}<a data-title="修改收货人信息" data-modal="{:url('order/address')}?order_no={$vo.order_no}">修改</a>{/if}
                 {/if}

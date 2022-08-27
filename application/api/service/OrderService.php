@@ -494,7 +494,7 @@ class OrderService
     {
         // 收货地址处理
         $addressWhere = ['mid' => $order['mid'], 'id' => $address_id, 'status' => '1', 'is_deleted' => '0'];
-        $addressField = 'username express_username,phone express_phone,province express_province,city express_city,area express_area,address express_address';
+        $addressField = 'store_name express_store_name,username express_username,phone express_phone,province express_province,city express_city,area express_area,address express_address';
         if (!($address = Db::name('StoreMemberAddress')->field($addressField)->where($addressWhere)->find())) {
             return ['code' => 0, 'msg' => '收货地址数据异常！'];
         }
