@@ -2,6 +2,7 @@
 namespace app\api\controller\user;
 use app\api\controller\BasicUserApi;
 use app\api\service\MemberService;
+use service\FileService;
 use service\WechatService;
 use think\Db;
 use think\Validate;
@@ -187,10 +188,19 @@ class Member extends BasicUserApi
 
     public function set_portrait()
     {
-        $headimg = $this->request->post('headimg', '');
-        if(empty($headimg)) $this->error('保存失败，请稍后再试~');
-        Db::name('store_member')->where('id',UID)->setField('headimg', $headimg);
-        $this->success('保存成功');
+        $file = $this->request->file('file');
+        $names = str_split(md5(date('YmHis').rand(100,999)), 16);
+        $ext = strtolower(pathinfo($file->getInfo('name'), 4));
+        $ext = $ext ? $ext : 'tmp';
+        $filename = "{$names[0]}/{$names[1]}.{$ext}";
+        // 文件上传处理
+        if (($info = $file->move("static/upload/{$names[0]}", "{$names[1]}.{$ext}", true))) {
+            if (($site_url = FileService::getFileUrl($filename, 'local'))) {
+                Db::name('store_member')->where('id',UID)->setField('headimg', $site_url);
+                $this->success('保存成功');
+            }
+        }
+        $this->error('保存失败，请稍后再试~');
     }
 
 }
