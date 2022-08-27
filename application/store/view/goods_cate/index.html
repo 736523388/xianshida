@@ -54,27 +54,27 @@
             </td>
             <td class='text-center nowrap'>
 
-                {if auth("$classuri/add") && $vo.spt < 1}
-                <span class="text-explode">|</span>
-                <a data-title="添加分类" data-modal='{:url("@$classuri/add")}?pid={$vo.id}'>添加分类</a>
+                {if auth("$classuri/add")}
+                    {if $vo.spt < 1}
+                    <span class="text-explode">|</span>
+                    <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子分类" data-modal='{:url("@$classuri/add")}?pid={$vo.id}'>添 加</a>
+                    {else}
+                    <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
+                    {/if}
                 {/if}
 
                 {if auth("$classuri/edit")}
-                <span class="text-explode">|</span>
-                <a data-title="编辑分类" data-modal='{:url("@$classuri/edit")}?id={$vo.id}'>编辑</a>
+                <a class="layui-btn layui-btn-xs" data-modal='{:url("@$classuri/edit")}?id={$vo.id}' data-title="编辑分类">编 辑</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("$classuri/forbid")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='status' data-value='0' data-action='{:url("$classuri/forbid")}'>禁用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-update="{$vo.ids}" data-field='status' data-action="{:url('$classuri/forbid')}" data-value="0">禁 用</a>
                 {elseif auth("$classuri/resume")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>启用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-update="{$vo.ids}" data-field='status' data-action="{:url('$classuri/resume')}" data-value="1">启 用</a>
                 {/if}
 
                 {if auth("$classuri/del")}
-                <span class="text-explode">|</span>
-                <a data-update="{$vo.ids}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" data-update="{$vo.ids}" data-field='delete' data-action='{:url("$classuri/del")}'>删 除</a>
                 {/if}
 
             </td>

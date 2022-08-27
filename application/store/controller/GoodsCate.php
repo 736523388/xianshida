@@ -101,7 +101,7 @@ class GoodsCate extends BasicAdmin
             // 读取上级分类
             $where = ['status' => '1', 'is_deleted' => '0'];
             $_cates = (array)Db::name($this->table)->where($where)->order('sort asc,id desc')->select();
-//            array_unshift($_cates, ['id' => 0, 'pid' => -1, 'cate_title' => '--- 顶级分类 ---']);
+            array_unshift($_cates, ['id' => 0, 'pid' => -1, 'cate_title' => '--- 顶级分类 ---']);
             $cates = ToolsService::arr2table($_cates);
             foreach ($cates as $key => &$cate) {
                 if (isset($vo['pid'])) {
