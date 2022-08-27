@@ -138,11 +138,7 @@ class GoodsService
         $specField = 'id,goods_id,goods_spec,goods_number,huaxian_price,market_price,selling_price,goods_stock,goods_sale';
         $specList = Db::name('StoreGoodsList')->where($specWhere)->column($specField);
         foreach ($specList as $key => $spec) {
-            $goods_spec_alias_arr = [];
-            foreach (explode(';;', $spec['goods_spec']) as $item) {
-                $goods_spec_alias_arr[] = explode('::', $item)[1];
-            }
-            $specList[$key]['goods_spec_alias_arr'] = $goods_spec_alias_arr;
+            $specList[$key]['goods_spec_alias_arr'] = self::getSpecAlias($spec['goods_spec']);
             if ($spec['goods_spec'] === 'default:default') {
                 $specList[$key]['goods_spec_alias'] = '默认规格';
             } else {
@@ -352,6 +348,18 @@ class GoodsService
             Image::open($dir . $file)->thumb(180, 180)->save($dir . $file);
         }
         return $dir . $file;
+    }
+
+    public static function getSpecAlias($goods_spec, $return_type = 1)
+    {
+        $goods_spec_arr =[];
+        foreach (explode(';;', $goods_spec) as $item) {
+            $goods_spec_arr[] = explode('::', $item)[1];
+        }
+        if($return_type === 2){
+            return join(' ', $goods_spec_arr);
+        }
+        return $goods_spec_arr;
     }
 
 }

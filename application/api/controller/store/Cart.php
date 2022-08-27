@@ -35,11 +35,7 @@ class Cart extends BasicUserApi
             ->select();
        foreach ($list as &$item) {
            $item['brand_title']=sysconf('app_name');
-           if ($item['goods_spec'] === 'default:default') {
-               $item['goods_spec_alias'] = '默认规格';
-           } else {
-               $item['goods_spec_alias'] = str_replace([':', ','], [': ', ', '], $item['goods_spec']);
-           }
+           $item['goods_spec_alias'] = \app\api\service\GoodsService::getSpecAlias($item['goods_spec'], 2);
            $item['goods_image'] = explode('|',!empty($item['goods_image']) ? $item['goods_image'] : '');
            $item['goods_logo'] = sysconf('applet_url'). $item['goods_logo'];
            $item['status'] = $item['goods_status'] && $item['spec_status'] && $item['stock'] ? 1 : 0;

@@ -677,11 +677,12 @@ class OrderService
             }
             foreach ($goodsList as $goods) {
                 $goods['goods_logo'] = sysconf('applet_url') . $goods['goods_logo'];
-                if ($goods['goods_spec'] === 'default:default') {
-                    $goods['goods_spec_alias'] = '默认规格';
-                } else {
-                    $goods['goods_spec_alias'] = str_replace([':', ','], ['：', '，'], $goods['goods_spec']);
-                }
+                $goods['goods_spec_alias'] = \app\api\service\GoodsService::getSpecAlias($goods['goods_spec'], 2);
+//                if ($goods['goods_spec'] === 'default:default') {
+//                    $goods['goods_spec_alias'] = '默认规格';
+//                } else {
+//                    $goods['goods_spec_alias'] = str_replace([':', ','], ['：', '，'], $goods['goods_spec']);
+//                }
                 ($vo['order_no'] === $goods['order_no']) && $list[$key]['goods'][] = $goods;
             }
         }
