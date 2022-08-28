@@ -28,7 +28,7 @@ class Cron
         //订单自动收货
         $this->receive_order();
         //定时失败砍价
-        $this->deal_order_bargain();
+//        $this->deal_order_bargain();
         //自动成团
         //$this->set_group_order();
     }
@@ -184,15 +184,21 @@ class Cron
                 Db::name('store_order')
                     ->where('order_no','in',$order_nos)
                     ->setField('status',0);
+                //订单商品状态取消
+                Db::name('store_order_goods')
+                    ->where('order_no','in',$order_nos)
+                    ->where('status',1)
+                    ->setField('status',0);
                 //退回积分
-                foreach ($order_list as $k=>$v){
-                    if($v['coupon_id']>0){
-                        Db::name('StoreCouponUser')->where('id', $v['coupon_id'])->setField('status', 1);
-                    }
-                    if($v['use_integral']>0){
-                        MemberService::log_account_change($v['mid'],$v['use_integral'],'订单['.$v['order_no'].']支付超时，积分自动退还');
-                    }
-                }
+//                foreach ($order_list as $k=>$v){
+//                    if($v['coupon_id']>0){
+//                        Db::name('StoreCouponUser')->where('id', $v['coupon_id'])->setField('status', 1);
+//                    }
+//                    if($v['use_integral']>0){
+//                        MemberService::log_account_change($v['mid'],$v['use_integral'],'订单['.$v['order_no'].']支付超时，积分自动退还');
+//                    }
+//                }
+                //同步库存
                 $order_goods=Db::name('store_order_goods')
                     ->where('order_no','in',$order_nos)
                     ->column('goods_id');
@@ -201,12 +207,7 @@ class Cron
                     //同步库存
                     GoodsService::syncGoodsStock($v);
                 }
-                //订单商品状态取消
-                Db::name('store_order_goods')
-                    ->where('order_no','in',$order_nos)
-                    ->where('status',1)
-                    ->setField('status',0);
-                //同步库存
+
             }catch (Exception $e){
                 Db::rollback();
                 LogService::write('订单取消','订单取消失败：'.$e->getMessage());
@@ -232,7 +233,8 @@ class Cron
             ->column('a.id');
         $ids=implode(',',$order_list);
         if(!$ids)return false;
-        finish_order($ids);
+        Db::name('store_order')->where('id','in',$ids)->setField('status',5);
+//        finish_order($ids);
         /**try{
             Db::transaction(function () use($ids){
                 finish_order($ids);

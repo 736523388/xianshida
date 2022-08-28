@@ -23,7 +23,8 @@
     "topthink/think-image": "^1.0",
     "phpoffice/phpspreadsheet": "^1.6",
     "yurunsoft/chinese-util": "^1.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-bcmath": "*"
   },
   "repositories": {
     "packagist": {

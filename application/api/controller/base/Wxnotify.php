@@ -94,21 +94,41 @@ class Wxnotify extends BasicApi
         $result = $this->wechat->getNotify();
 //        file_put_contents('WxPay.txt',json_encode($result).PHP_EOL,FILE_APPEND);
         if($result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS'){
+            $out_trade_no = $result['out_trade_no'];//订单号
+            $transaction_id = $result['transaction_id'];//交易号
+            $real_price = bcdiv($result['total_fee'], 100, 2);//真实支付金额
 
-            if($order = Db::table('store_order')->where('order_no',$result['out_trade_no'])->where('is_pay','0')->find()){
+            if($order = Db::table('store_order')->where('order_no', $out_trade_no)->where('is_pay','0')->find()){
 
+                $mid = $order['mid'];
+                $number = intval(Db::name('StoreOrderGoods')->where(['order_no' => $out_trade_no])->sum('number'));
+                $integral_base_point = intval(sysconf('integral_base_point'));
+                $integral = $number * $integral_base_point;
                 try {
-                    Db::transaction(function () use($order,$result){
-                        Db::table('store_order')->where('order_no',$result['out_trade_no'])->update([
+                    Db::transaction(function () use($mid, $out_trade_no, $transaction_id, $real_price, $number, $integral){
+                        Db::table('store_order')->where('order_no', $out_trade_no)->update([
                             'is_pay' => '1',
                             'pay_type' => 'wechat',
-                            'pay_no' => $result['transaction_id'],
-                            'pay_price' => $result['total_fee'] / 100,
+                            'pay_no' => $transaction_id,
+                            'pay_price' => $real_price,
                             'pay_at' => date('Y-m-d H:i:s'),
                             'status' => 2
                         ]);
-                        OrderService::manzeng($order);
-                        Db::table('store_member')->where('id',$order['mid'])->setInc('save_amount',$order['member_discount_amount']);
+                        // 统计消费额和积分统计
+                        Db::name('StoreMember')->where('id', $mid)->update([
+                            'self_expenditure' => Db::raw('self_expenditure+' . $real_price),
+                            'self_expenditure_total' => Db::raw('self_expenditure_total+' . $real_price),
+                            'integral' => Db::raw('integral+' . $integral),
+                            'integral_total' => Db::raw('integral_total+' . $integral),
+                        ]);
+                        Db::table('store_member_integral_log')->insert([
+                            'mid' => $mid,
+                            'integral' => $integral,
+                            'desc' => "购买{$number}件商品获赠{$integral}积分"
+                        ]);
+//                        Db::name('StoreMember')->where('id', $order['mid'])->setInc('save_amount',$order['member_discount_amount']);
+//                        OrderService::manzeng($order);
+//                        Db::table('store_member')->where('id',$order['mid'])->setInc('save_amount',$order['member_discount_amount']);
                         //发送模板消息
 //                        $openid = Db::table('store_member')->where('id',$order['mid'])->value('openid');
 //                        $template_id = 'fRU24pJ1hah8aaubEeUE5-n5alUyu3fa3Vfxf7vXFeY';
