@@ -62,8 +62,8 @@
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
             </th>
             <th class='text-left nowrap'>优惠券名称</th>
-            <th class='text-left nowrap'>发放时间</th>
-            <th class='text-left nowrap'>总数 ( 剩余, 已领 )</th>
+            <th class='text-left nowrap'>添加时间</th>
+            <th class='text-left nowrap'>数量</th>
             <th class='text-left nowrap'>状态</th>
             <th class='text-left'></th>
         </tr>
@@ -76,7 +76,12 @@
             </td>
             <td class='text-left nowrap'>{$vo.coupon_name}</td>
             <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>
+            {if $vo.coupon_stock eq 0}
+            <td class="text-left nowrap">不限量 ( 领 {$vo.coupon_sale} ) </td>
+            {else}
             <td class="text-left nowrap">总 {$vo.coupon_stock} ( 剩 {$vo.coupon_stock-$vo.coupon_sale}, 领 {$vo.coupon_sale} ) </td>
+            {/if}
+
             <td class='text-left nowrap'>
                 {if $vo.status eq 0}<span class="color-red">已禁用</span>{elseif $vo.status eq 1}<span class="color-green">正常</span>{/if}
             </td>

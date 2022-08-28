@@ -6,13 +6,14 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">优惠券名称</label>
         <div class='col-sm-8'>
-            <input autofocus name="coupon_name" value='{$vo.coupon_name|default=""}' required="required" title="请输入优惠券名称" placeholder="请输入优惠券名称" class="layui-input">
+            <input name="coupon_name" value='{$vo.coupon_name|default=""}' required="required" title="请输入优惠券名称" placeholder="请输入优惠券名称" class="layui-input">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">发行总量</label>
         <div class='col-sm-8'>
-            <input type="number" name="coupon_stock" value='{$vo.coupon_stock|default=""}' required="required" title="请输入发行总量" placeholder="请输入发行总量" class="layui-input">
+            <input type="number" name="coupon_stock" onblur="this.value=Math.abs(parseFloat(this.value)||0)" value='{$vo.coupon_stock|default=""}' required="required" title="请输入发行总量" placeholder="请输入发行总量" class="layui-input">
+            <p class="help-block">请输入此优惠券的总数量，填写0为不限制。</p>
         </div>
     </div>
 
@@ -21,18 +22,18 @@
             优惠金额
         </label>
         <div class="col-sm-8">
-            <input name="coupon_quota" type="number"  value='{$vo.coupon_quota|default=""}' required="required" title="请输入金额" placeholder="请输入金额" class="layui-input">
-            <p class="help-block">请输入优惠券金额</p>
+            <input name="coupon_quota" onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" value='{$vo.coupon_quota|default=""}' required title="请输入优惠金额" placeholder="请输入优惠金额" class="layui-input">
+            <p class="help-block">请输入优惠金额</p>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-sm-2 control-label">
-            使用门槛
+            启用金额
         </label>
         <div class="col-sm-8">
-            <input name="use_threshold" type="number" value='{$vo.use_threshold|default=""}' required="required" title="请输入使用限制" placeholder="请输入金额" class="layui-input">
-            <p class="help-block">填写满多少金额可以使用，不填或填写0为不限制。</p>
+            <input name="use_threshold" onblur="this.value=Math.abs(parseFloat(this.value)||0.00).toFixed(2)" value='{$vo.use_threshold|default=""}' required title="请输入启用金额" placeholder="请输入启用金额" class="layui-input">
+            <p class="help-block">启用金额，填写0为不限制。</p>
         </div>
     </div>
     <div class="form-group">
@@ -40,41 +41,30 @@
             积分价值
         </label>
         <div class="col-sm-8">
-            <input name="integral" type="number" value='{$vo.integral|default=""}' required title="请输入积分数量" placeholder="请输入数量" class="layui-input">
-            <p class="help-block">兑换所需积分数量。</p>
+            <input name="integral" type="number" onblur="this.value=Math.abs(parseFloat(this.value)||0)" value='{$vo.integral|default=""}' required title="请输入积分数量" placeholder="请输入数量" class="layui-input">
+            <p class="help-block">兑换所需积分数量,填写0则不开放积分兑换。</p>
         </div>
     </div>
     <legend>基本规则</legend>
-    {if isset($levels)}
-    <div class="form-group" data-level-limits-type="1">
-        <label class="col-sm-2 control-label label-required"></label>
-        <div class="col-sm-8">
-            {foreach $levels as $level}
-            <label class="think-checkbox">
-                <!--{if in_array($level['id'],$vo['use_level'])}-->
-                <input type="checkbox" checked name="use_level[]" value="{$level.id}" lay-ignore> {$level.level_title}
-                <!--{else}-->
-                <input type="checkbox" name="use_level[]" value="{$level.id}" lay-ignore> {$level.level_title}
-                <!--{/if}-->
-            </label>
-            {/foreach}
-            <p class="help-block">请勾选可以领取和使用此优惠券的等级</p>
-            {if empty($levels)}<span class="color-desc" style="line-height:36px">未配置会员等级</span>{/if}
-        </div>
-    </div>
-    {/if}
-    <div class="form-group">
-        <label class="col-sm-2 control-label">每人限领</label>
-        <div class='col-sm-8'>
-            <input type="number" name="use_limit" value='{$vo.use_limit|default=""}' required="required" title="请输入限领张数" placeholder="请输入数量" class="layui-input">
-            <p class="help-block">每人限领多少张</p>
-        </div>
-    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">每人限领</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <input type="number" name="use_limit" value='{$vo.use_limit|default=""}' required="required" title="请输入限领张数" placeholder="请输入数量" class="layui-input">-->
+<!--            <p class="help-block">每人限领多少张</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="col-sm-2 control-label">有效期</label>-->
+<!--        <div class='col-sm-8'>-->
+<!--            <input name="coupon_time" id="coupon_time" required value="{$vo.coupon_time|default=''}" placeholder="请选择有效期" class="layui-input">-->
+<!--            <p class="help-block">在固定日期范围内有效</p>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="form-group">
         <label class="col-sm-2 control-label">有效期</label>
         <div class='col-sm-8'>
-            <input name="coupon_time" id="coupon_time" required value="{$vo.coupon_time|default=''}" placeholder="请选择有效期" class="layui-input">
-            <p class="help-block">在固定日期范围内有效</p>
+            <input name="coupon_day" required value="{$vo.coupon_day|default=''}" placeholder="请输入天数" class="layui-input">
+            <p class="help-block">领取后多少天有效，包含领取当天</p>
         </div>
     </div>
     <div class="form-group">
@@ -188,24 +178,19 @@
     (function () {
 
         <!-- 优惠形式-->
-        buildForm("data-coupon-type","{$vo.coupon_type|default='1'}");
-        $('[name=coupon_type]').on('click', function () {
-            buildForm("data-coupon-type",$('[name=coupon_type]:checked').val())
-        });
+        // buildForm("data-coupon-type","{$vo.coupon_type|default='1'}");
+        // $('[name=coupon_type]').on('click', function () {
+        //     buildForm("data-coupon-type",$('[name=coupon_type]:checked').val())
+        // });
         <!-- 有效期模式-->
-        buildForm("data-time-type","{$vo.time_type|default='1'}");
-        $('[name=time_type]').on('click', function () {
-            buildForm("data-time-type",$('[name=time_type]:checked').val())
-        });
+        // buildForm("data-time-type","{$vo.time_type|default='1'}");
+        // $('[name=time_type]').on('click', function () {
+        //     buildForm("data-time-type",$('[name=time_type]:checked').val())
+        // });
         <!-- 使用范围-->
         buildForm("data-auth-type","{$vo.coupon_auth_type|default='1'}");
         $('[name=coupon_auth_type]').on('click', function () {
             buildForm("data-auth-type",$('[name=coupon_auth_type]:checked').val())
-        });
-        <!-- 等级限制-->
-        buildForm("data-level-limits-type","{$vo.level_limits|default='0'}");
-        $('[name=level_limits]').on('click', function () {
-            buildForm("data-level-limits-type",$('[name=level_limits]:checked').val())
         });
         // 表单显示编译
         function buildForm(obj,value) {
