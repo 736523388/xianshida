@@ -255,9 +255,9 @@ class Order extends BasicAdmin
             if($post['status']!=''){
                 $db->where('o.status',$post['status']);
             }
-            if($post['depot_id']!=''){
-                $db->where('og.depot_id',$post['depot_id']);
-            }
+//            if($post['depot_id']!=''){
+//                $db->where('og.depot_id',$post['depot_id']);
+//            }
             if($post['create_at']!=''){
                 $post['create_at']=explode(' - ',$post['create_at']);
                 /*if($post['create_at'][0]>$post['create_at'][1]){
