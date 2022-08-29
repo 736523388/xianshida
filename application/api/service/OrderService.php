@@ -62,8 +62,8 @@ class OrderService
         /* 应付金额 商品金额 优惠金额 会员见面金额 运费金额 商品重量 是否需要实名认证*/
         $confirmData = ['real_price' => 0, 'goods_price' => 0, 'discount_amount' => 0, 'member_discount_amount' => 0, 'freight_price' => 0, 'goods_weight' => 0, 'is_auth' => 0];
 
-        foreach (explode(';', trim($params, ',;@')) as $param) {
-            list($goods_id, $goods_spec, $number) = explode('@', "{$param}@@");
+        foreach (explode('@@', $params) as $param) {
+            list($goods_id, $goods_spec, $number) = explode('@', $param);
             $item = ['mid' => $mid, 'goods_id' => $goods_id, 'goods_spec' => $goods_spec, 'goods_number' => $number];
             $goodsResult = self::buildConfirmData($item, $goodslist, $cateList, $confirmData, $price_field);
             if (empty($goodsResult['code'])) {
@@ -387,8 +387,8 @@ class OrderService
         // 订单数据生成
         list($order_no, $orderList) = [DataService::createSequence(10, 'ORDER'), []];
         $order = ['mid' => $mid, 'order_no' => $order_no, 'real_price' => 0, 'goods_price' => 0, 'discount_amount' => 0, 'member_discount_amount' => 0, 'freight_price' => 0, 'goods_weight' => 0, 'is_auth' => 0, 'desc' => $orderDesc, 'type' => $orderType, 'from' => $from];
-        foreach (explode(';', trim($params, ',;@')) as $param) {
-            list($goods_id, $goods_spec, $number) = explode('@', "{$param}@@");
+        foreach (explode('@@', $params) as $param) {
+            list($goods_id, $goods_spec, $number) = explode('@', $param);
             $item = ['mid' => $mid, 'order_no' => $order_no, 'goods_id' => $goods_id, 'goods_spec' => $goods_spec, 'goods_number' => $number];
             $goodsResult = self::buildOrderData($item, $order, $orderList, $price_field, $cateList);
             if (empty($goodsResult['code'])) {
