@@ -57,7 +57,7 @@ class GoodsCate extends BasicApi
     public function special(){
         $field = 'id,image,cate_title';
         $order = 'sort asc,id desc';
-        $db = Db::name($this->table)->where(['is_deleted'=>'0','is_homepage'=>'1','pid'=>'0']);
+        $db = Db::name($this->table)->where(['is_deleted'=>'0','is_homepage'=>'1','pid'=>'0','status' => 1]);
         $list = (array)$db->field($field)->order($order)->select();
         $this->success('success',$list);
     }
