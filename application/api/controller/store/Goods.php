@@ -128,6 +128,7 @@ class Goods extends BasicApi
         foreach ($list as &$item) {
             $item['huaxian_price'] = bcadd($item['huaxian_price'],0,2);
             $item[$this->price_field] = bcadd($item[$this->price_field], 0, 2);
+            $item['goods_logo'] .= "?x-oss-process=style/base_image";
         }
 //        GoodsService::buildGoodsList($list);
         $this->success('success',$list);
