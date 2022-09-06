@@ -62,9 +62,10 @@ class Order extends BasicUserApi
         $address_id = (int)$this->request->param('address_id',0);
         /*实名认证ID*/
         $authentication_id = (int)$this->request->param('authentication_id',0);
+        $paytype = (int)(boolean)$this->request->param('paytype',0);
         /*订单描述*/
         $orderDesc = (string)$this->request->param('order_desc','');
-        $result = OrderService::create(UID, USER_LEVEL ,$data,$coupon_id,$address_id,$authentication_id,$orderDesc);
+        $result = OrderService::create(UID, USER_LEVEL ,$data,$coupon_id,$address_id,$authentication_id,$orderDesc,1,'wechat',$paytype);
         return json($result);
     }
 

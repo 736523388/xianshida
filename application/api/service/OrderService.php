@@ -372,7 +372,7 @@ class OrderService
      * @email: 736523388@qq.com
      * @DateTime: 2018/12/3 16:40
      */
-    public static function create($mid, $user_level, $params, $coupon_id, $addressId, $authentication_id, $orderDesc = '', $orderType = 1, $from = 'wechat')
+    public static function create($mid, $user_level, $params, $coupon_id, $addressId, $authentication_id, $orderDesc = '', $orderType = 1, $from = 'wechat', $paytype=0)
     {
         /*是否享受会员价*/
         $is_insider = $user_level ? true : false;
@@ -386,7 +386,7 @@ class OrderService
 
         // 订单数据生成
         list($order_no, $orderList) = [DataService::createSequence(10, 'ORDER'), []];
-        $order = ['mid' => $mid, 'order_no' => $order_no, 'real_price' => 0, 'goods_price' => 0, 'discount_amount' => 0, 'member_discount_amount' => 0, 'freight_price' => 0, 'goods_weight' => 0, 'is_auth' => 0, 'desc' => $orderDesc, 'type' => $orderType, 'from' => $from];
+        $order = ['mid' => $mid, 'order_no' => $order_no, 'real_price' => 0, 'goods_price' => 0, 'discount_amount' => 0, 'member_discount_amount' => 0, 'freight_price' => 0, 'goods_weight' => 0, 'is_auth' => 0, 'desc' => $orderDesc, 'type' => $orderType, 'from' => $from,'pay_on_arrival' => $paytype];
         foreach (explode('@@', $params) as $param) {
             list($goods_id, $goods_spec, $number) = explode('@', $param);
             $item = ['mid' => $mid, 'order_no' => $order_no, 'goods_id' => $goods_id, 'goods_spec' => $goods_spec, 'goods_number' => $number];
@@ -458,6 +458,9 @@ class OrderService
         }
         unset($order['goods_weight']);
         unset($order['is_auth']);
+        if($order['pay_on_arrival'] > 0){
+            $order['status'] = '3';
+        }
         try {
             // 写入订单信息
             Db::transaction(function () use ($order, $orderList, $expressResult, $mid, $use_coupon) {
@@ -477,7 +480,7 @@ class OrderService
         } catch (\Exception $e) {
             return ['code' => 0, 'msg' => '商城订单创建失败，请稍候再试！' . $e->getLine() . $e->getFile() . $e->getMessage()];
         }
-        return ['code' => 1, 'msg' => '商城订单创建成功！', 'order_no' => $order_no, 'is_pay' => $order['is_pay']];
+        return ['code' => 1, 'msg' => '商城订单创建成功！', 'order_no' => $order_no, 'is_pay' => $order['is_pay'],'pay_on_arrival' => $paytype];
     }
 
     /**
