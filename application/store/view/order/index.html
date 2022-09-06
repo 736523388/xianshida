@@ -226,7 +226,7 @@
                 {case value='2'}<span class="layui-badge layui-bg-blue">未发货</span>{/case}
                 {case value='3'}
                     {if $vo.pay_on_arrival >0}
-                    <span class="layui-badge layui-bg-black">货到付款</span>
+                    <span class="layui-badge layui-bg-black">等待送货</span>
                     {else}
                     <span class="layui-badge layui-bg-orange">已发货</span>
                     {/if}
@@ -278,6 +278,9 @@
                 </table>
             </td>
             <td class="text-left text-top nowrap">
+                {if $vo.pay_on_arrival >0}
+                <span class="layui-badge layui-bg-black">货到付款</span><br>
+                {/if}
                 {if empty($vo.express)}
                 <span class="color-desc">无发货信息</span>
                 {else}
