@@ -800,7 +800,7 @@ class Order extends BasicUserApi
             array_multisort(array_column($res['Traces'],'AcceptTime'),SORT_DESC,$res['Traces']);
             $res['Shipper']=$orderExpress['send_company_title'];
         }else{
-            $res['Shipper']='到店自取';
+            $res['Shipper']='货到付款';
             $res['store']=Db::name('store')
                 ->where('id',$orderExpress['store_id'])
                 ->find();

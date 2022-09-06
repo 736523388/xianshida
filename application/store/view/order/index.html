@@ -266,7 +266,9 @@
                 </table>
             </td>
             <td class="text-left text-top nowrap">
-
+                {if $vo.pay_on_arrival >1}
+                <span class="layui-badge layui-bg-black">货到付款</span>
+                {/if}
                 {if empty($vo.express)}
                 <span class="color-desc">无发货信息</span>
                 {else}
