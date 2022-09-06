@@ -224,8 +224,20 @@
                 <a data-update="{$vo.order_no}"  data-action='{:url("$classuri/setpay")}'>设置支付</a>
                 {/case}
                 {case value='2'}<span class="layui-badge layui-bg-blue">未发货</span>{/case}
-                {case value='3'}<span class="layui-badge layui-bg-orange">已发货</span>{/case}
-                {case value='4'}<span class="layui-badge layui-bg-green">已收货</span>{/case}
+                {case value='3'}
+                    {if $vo.pay_on_arrival >0}
+                    <span class="layui-badge layui-bg-black">货到付款</span>
+                    {else}
+                    <span class="layui-badge layui-bg-orange">已发货</span>
+                    {/if}
+                {/case}
+                {case value='4'}
+                    {if $vo.pay_on_arrival >0}
+                    <span class="layui-badge layui-bg-orange">已送达</span>
+                    {else}
+                    <span class="layui-badge layui-bg-orange">已收货</span>
+                    {/if}
+                {/case}
                 {case value='5'}<span class="layui-badge layui-bg-gray">已完成</span>{/case}
                 {case value='6'}
                 <span class="layui-badge layui-bg-red">{$vo.order_no|get_back_order_text=0}</span>
@@ -266,9 +278,6 @@
                 </table>
             </td>
             <td class="text-left text-top nowrap">
-                {if $vo.pay_on_arrival >0}
-                <span class="layui-badge layui-bg-black">货到付款</span>
-                {/if}
                 {if empty($vo.express)}
                 <span class="color-desc">无发货信息</span>
                 {else}
