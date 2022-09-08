@@ -173,7 +173,7 @@ class Member extends BasicUserApi
     public function member_info(){
         $item=Db::name('store_member')
             ->where('id',UID)
-            ->field('phone,nickname,headimg,sex')
+            ->field('phone,nickname,headimg,sex,contact_name,store_name')
             ->find();
         $this->success('success',$item);
     }
@@ -201,6 +201,27 @@ class Member extends BasicUserApi
             }
         }
         $this->error('保存失败，请稍后再试~');
+    }
+
+    public function set_store_info()
+    {
+        $store_name = $this->request->post('store_name', '');
+        $contact_name = $this->request->post('contact_name', '');
+        $phone = $this->request->post('phone', '');
+        if(empty($store_name)) $this->error('店铺名称不能为空');
+        if(empty($contact_name)) $this->error('联系人不能为空');
+        $validate=Validate::make([
+            'mobile|手机号'=>'require|mobile'
+        ]);
+        if(false===$validate->check(['mobile'=>$phone])){
+            $this->error($validate->getError());
+        }
+        Db::name('store_member')->where('id',UID)->update([
+            'store_name' => $store_name,
+            'contact_name' => $contact_name,
+            'phone' => $phone
+        ]);
+        $this->success('保存成功');
     }
 
 }

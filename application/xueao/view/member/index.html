@@ -68,9 +68,9 @@
             <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox' />
             </th>
-            <th class='text-left nowrap'>会员昵称[ID]</th>
-            <th class='text-left nowrap'>手机号码</th>
-<!--            <th class='text-left nowrap'>邀请人</th>-->
+            <th class='text-left nowrap'>店名[ID]</th>
+            <th class='text-left nowrap'>联系人</th>
+            <th class='text-left nowrap'>联系电话</th>
 <!--            <th class='text-left nowrap'>会员身份</th>-->
             <!--<th class='text-left nowrap'>团队</th>-->
 
@@ -90,13 +90,14 @@
             </td>
             <td class='text-left nowrap'>
                 <img data-tips-image class="headimg" src="{$vo.headimg}" style="height: 40px;"/>
-                {notempty name='vo.nickname'}
-                {$vo.nickname|default='--'}
+                {notempty name='vo.store_name'}
+                {$vo.store_name|default='--'}
                 {else}
-                <span class="color-desc">未设置微信昵称</span>
+                <span class="color-desc">未设置店名</span>
                 {/notempty}
                 [ID：{$vo.id}]
             </td>
+            <td>{$vo.contact_name|default='-'}</td>
             <td>{$vo.phone|default='-'}</td>
 <!--            <td class='text-left nowrap'>{$vo.parent_member_name}</td>-->
 <!--            <td class='text-left nowrap'>-->
