@@ -459,7 +459,7 @@ class OrderService
         unset($order['goods_weight']);
         unset($order['is_auth']);
         if($order['pay_on_arrival'] > 0){
-            $order['status'] = '3';
+            $order['status'] = '2';
         }
         try {
             // 写入订单信息
