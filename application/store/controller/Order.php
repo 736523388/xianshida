@@ -194,11 +194,16 @@ class Order extends BasicAdmin
                 //同意退款
                 Db::name('store_order_back')->where(['order_no' => $order_no])->setField('status',1);
             }elseif($status==1){
-                //确认退款
-                Db::transaction(function()use($order_no){
-                    Db::name('store_order_back')->where(['order_no' => $order_no])->setField('status',2);
-                    do_back_order($order_no);
-                });
+                try{
+                    //确认退款
+                    Db::transaction(function()use($order_no){
+                        Db::name('store_order_back')->where(['order_no' => $order_no])->setField('status',2);
+                        do_back_order($order_no);
+                    });
+                }catch (\Exception $exception){
+                    $this->error($exception->getMessage());
+                }
+
             }else{
                 $this->error('状态错误');
             }
