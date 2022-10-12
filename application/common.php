@@ -144,8 +144,8 @@ function do_back_order($order_no){
             \app\api\service\IntegralService::RecordLog($order['mid'],$pay_integral,'购买商品');
         }
         if($pay_price>0&&$order['pay_type']=='wechat'){
-            sysconf('wechat_cert_cert',Env::get('root_path').'static/cert/apiclient_cert.pem');
-            sysconf('wechat_cert_key',Env::get('root_path').'static/cert/apiclient_key.pem');
+//            sysconf('wechat_cert_cert',Env::get('root_path').'static/cert/apiclient_cert.pem');
+//            sysconf('wechat_cert_key',Env::get('root_path').'static/cert/apiclient_key.pem');
             /*微信退款*/
             $options = [
                 'out_trade_no' => $order['order_no'],
