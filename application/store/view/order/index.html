@@ -288,7 +288,7 @@
                     {if $vo['status']<3}
                     <span class="layui-badge layui-bg-black">未发货</span>
                     {if auth('store/deliver/express')}
-                    {if $vo.status eq 2 and $vo.is_pay eq 1 and ($vo.type eq 1 || ($vo.type eq 2 and $vo.success_time gt 0) || $vo.type eq 3)}
+                    {if $vo.status eq 2}
                     <a data-title="快速发货" data-update="{$vo.order_no}" data-action="{:url('store/deliver/express')}">快速发货</a>
                     {/if}
                     {/if}
