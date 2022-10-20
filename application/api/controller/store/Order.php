@@ -493,7 +493,7 @@ class Order extends BasicUserApi
      */
     public function cancel(){
         $order_id = $this->request->param('order_id');
-        $orderWhere = ['id' => $order_id,'mid' => UID,'status' => '1','is_pay' => '0'];
+        $orderWhere = ['id' => $order_id,'mid' => UID,'is_pay' => '0'];
         if(!($order = Db::name('StoreOrder')->where($orderWhere)->find())){
             $this->error('非法操作');
         }
